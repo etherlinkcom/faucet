@@ -1,7 +1,7 @@
 import Image from "next/image"
-
 import { useEffect, useState } from "react";
 import ReCAPTCHA from "react-google-recaptcha";
+import Auth from "./auth";
 
 import {
   ConnectWallet,
