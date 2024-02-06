@@ -11,7 +11,6 @@ import { Disclosure } from "@headlessui/react";
 import { X, Discord } from '../../public/img/icons';
 
 // connect wallet button
-
 import {
   ConnectWallet,
   lightTheme,
@@ -30,6 +29,8 @@ const customTheme = lightTheme({
     borderColor: '#59ad8c'
   },
 });
+
+
 
 // Navigation item component
 // const NavItem = ({ item, pathname }) => {
@@ -116,8 +117,9 @@ export default function Navbar() {
 
   const navigation = [
     // { name: "🐣 Incubator 🐣", link: "/incubator" },
-    { name: "Faucet", onClick: () => { setShowFaucet(!showFaucet); } },
-    { name: "Explorer", link: "https://explorer.etherlink.com/" },
+    // { name: "Faucet", onClick: () => { setShowFaucet(!showFaucet); } },
+    { name: "Home", link: "https://etherlink.com/" },
+    { name: "Explorer", link: "https://testnet-explorer.etherlink.com/" },
     // { name: "Bridge", link: "https://bridge.etherlink.com/" },
     // { name: "Connect Wallet", component: <ConnectWalletButton />, condition: pathname === '/faucet' },
   ];

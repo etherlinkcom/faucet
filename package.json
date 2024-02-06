@@ -21,6 +21,10 @@
     "@thirdweb-dev/sdk": "4.0.26",
     "@typeform/embed-react": "^3.8.0",
     "@vercel/analytics": "^1.1.2",
+    "@web3auth/base": "^7.3.1",
+    "@web3auth/modal": "^7.3.1",
+    "class-variance-authority": "^0.7.0",
+    "clsx": "^2.1.0",
     "ethers": "^5",
     "fathom-client": "^3.6.0",
     "next": "^13.5.6",
@@ -28,7 +32,10 @@
     "react": "^18",
     "react-chrono": "^2.3.1",
     "react-dom": "^18",
-    "react-google-recaptcha": "^3.1.0"
+    "react-google-recaptcha": "^3.1.0",
+    "tailwind-merge": "^2.2.1",
+    "tailwindcss-animate": "^1.0.7",
+    "web3": "^4.4.0"
   },
   "devDependencies": {
     "autoprefixer": "^10.4.16",
