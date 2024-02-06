@@ -107,7 +107,7 @@ const Faucet = () => {
       <div className="max-w-2xl text-center lg:text-center">
         <div className="flex flex-col space-y-2 mb-10">
           <h1 className="text-white font-bold text-5xl" >
-            Get test XTZ on <span className="text-darkGreen">Etherlink</span>
+            Get testnet XTZ on <span className="text-darkGreen">Etherlink</span>
           </h1>
         </div>
         <div className="flex flex-col items-center">
