@@ -64,7 +64,7 @@ const Faucet = () => {
         switchToActiveChain={true}
         theme={customTheme}
         modalSize={"wide"}
-        btnTitle="Connect Etherlink To Metamask"
+        // btnTitle="Connect Etherlink To Metamask"
       />
     )
   }
