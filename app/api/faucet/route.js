@@ -11,7 +11,7 @@ export async function POST(request) {
         const wallet = new ethers.Wallet(privateKey, provider);
         const transaction = {
             to: walletAddress,
-            value: ethers.utils.parseEther("10"),
+            value: ethers.utils.parseEther("1"),
             gasPrice: await wallet.provider.getGasPrice(),
         };
 
