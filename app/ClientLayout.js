@@ -35,7 +35,7 @@ function ThirdWebConfig({ children }) {
       activeChain={activeChain}
       supportedWallets={[
         metamaskWallet({ recommended: true }),
-        // walletConnect(),
+        walletConnect(),
         localWallet(),
         // embeddedWallet({
         //   auth: {
