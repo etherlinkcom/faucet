@@ -9,10 +9,7 @@ export default function Footer() {
   const navigation = [
     { name: "Spotlight", link: "https://spotlight.tezos.com" },
     { name: "Documentation", link: "https://docs.etherlink.com" },
-    { name: "Brand Assets", link: "https://tinyurl.com/etherlinkbrandassets" },
-  ];
-  const legal = [
-    { name: "Brand Assets", link: "https://drive.google.com/file/d/1ifYTZvutM868URwf1xRZviFrV0rS9glE/view?usp=sharing" },
+    { name: "Brand Assets", link: " https://drive.google.com/file/d/1ifYTZvutM868URwf1xRZviFrV0rS9glE/view?usp=sharing" },
   ];
   return (
     <div className="relative">
