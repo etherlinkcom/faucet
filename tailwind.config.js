@@ -11,7 +11,8 @@ module.exports = {
         trueGray: colors.neutral,
         'lightGreen': '#b6feda',
         'darkGreen': '#59ad8c',
-        'midGreen': '#9bfecd'
+        'midGreen': '#9bfecd',
+        'neonGreen': '#38ff9c',
       },
       screens: {
         'max-sm': {'max': '640px'},

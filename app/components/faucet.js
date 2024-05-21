@@ -14,7 +14,7 @@ import {
 const customTheme = lightTheme({
   colors: {
     primaryText: 'black',
-    primaryButtonBg: '#b6feda',
+    primaryButtonBg: '#38ff9c',
     primaryButtonText: 'black',
     secondaryButtonBg: '#59ad8c',
     connectedButtonBgHover: '#59ad8c',
@@ -107,7 +107,7 @@ const Faucet = () => {
       <div className="max-w-2xl text-center lg:text-center">
         <div className="flex flex-col space-y-2 mb-10">
           <h1 className="text-white font-bold text-5xl" >
-            Get testnet XTZ on <span className="text-darkGreen">Etherlink</span>
+            Get testnet XTZ on <span className="text-neonGreen">Etherlink</span>
           </h1>
         </div>
         <div className="flex flex-col items-center">

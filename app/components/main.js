@@ -16,7 +16,7 @@ const MainContent = () => {
       <div className="max-w-2xl text-center lg:text-left">
         <div className="flex flex-col space-y-2 mb-12">
           <h1 className={"text-5xl font-bold mb-10"}>
-            Build Web3 on <span className="text-darkGreen">Etherlink</span>
+            Build Web3 on <span className="text-neonGreen">Etherlink</span>
           </h1>
           <div className="text-xl leading-normal text-left lg:text-xl xl:text-2xl text-gray-300">
             An EVM-compatible optimistic rollup with :

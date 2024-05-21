@@ -9,10 +9,7 @@ export default function Footer() {
   const navigation = [
     { name: "Spotlight", link: "https://spotlight.tezos.com" },
     { name: "Documentation", link: "https://docs.etherlink.com" },
-    { name: "Brand Assets", link: "https://tinyurl.com/etherlinkbrandassets" },
-  ];
-  const legal = [
-    { name: "Brand Assets", link: "https://tinyurl.com/etherlinkbrandassets" },
+    { name: "Brand Assets", link: " https://drive.google.com/file/d/1ifYTZvutM868URwf1xRZviFrV0rS9glE/view?usp=sharing" },
   ];
   return (
     <div className="relative">
@@ -22,13 +19,13 @@ export default function Footer() {
             <div>
               <Link href="/" className="flex items-center space-x-2 text-2xl font-medium  text-gray-100">
                 <Image
-                  src="/img/home/logo.png"
+                  src="/img/home/logo_beta_full.png"
                   alt="N"
-                  width={32}
-                  height={32}
-                  className="w-8"
+                  width={512}
+                  height={512}
+                  className="w-32"
                 />
-                <span>Etherlink</span>
+                {/* <span>Etherlink</span> */}
               </Link>
             </div>
 
@@ -50,7 +47,7 @@ export default function Footer() {
           <div>
             <div className="flex flex-wrap w-full -mt-2 -ml-3 lg:ml-0">
               {navigation.map((item, index) => (
-                <Link key={index} href={item.link} className="w-full px-4 py-2 rounded-md text-gray-300 hover:text-darkGreen" target="_blank" rel="noopener noreferrer">
+                <Link key={index} href={item.link} className="w-full px-4 py-2 rounded-md text-gray-300 hover:text-neonGreen" target="_blank" rel="noopener noreferrer">
                   {item.name}
                 </Link>
               ))}
@@ -72,7 +69,7 @@ export default function Footer() {
                 href="https://x.com/etherlinkcom"
                 target="_blank"
                 rel="noopener">
-                <span className="sr-only hover:fill-darkGreen">X</span>
+                <span className="sr-only hover:fill-neonGreen">X</span>
                 <X size={32} />
               </a>
               <a
