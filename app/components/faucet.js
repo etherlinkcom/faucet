@@ -1,7 +1,6 @@
 import Image from "next/image"
 import { useEffect, useState } from "react";
 import ReCAPTCHA from "react-google-recaptcha";
-import Auth from "./auth";
 
 import {
   ConnectWallet,
@@ -14,7 +13,7 @@ import {
 const customTheme = lightTheme({
   colors: {
     primaryText: 'black',
-    primaryButtonBg: '#b6feda',
+    primaryButtonBg: '#38ff9c',
     primaryButtonText: 'black',
     secondaryButtonBg: '#59ad8c',
     connectedButtonBgHover: '#59ad8c',
@@ -73,7 +72,7 @@ const Faucet = () => {
     return (
       walletStatus === "connected" && chainId === 128123 ?
         <button
-          onClick={txHash ? () => window.open(`https://explorer.etherlink.com/tx/${txHash}`, '_blank') : callFaucet}
+          onClick={txHash ? () => window.open(`https://testnet-explorer.etherlink.com/tx/${txHash}`, '_blank') : callFaucet}
           disabled={isLoading || !captchaCompleted}
           className={`flex flex-row items-center justify-center py-3 text-lg font-medium text-center text-black bg-white border-solid border-2 border-black rounded-md px-7 lg:px-6 lg:py-4 hover:bg-darkGreen hover:border-black hover:text-white ${isLoading || !captchaCompleted ? 'opacity-50 cursor-not-allowed' : ''}`}
         >
@@ -107,7 +106,7 @@ const Faucet = () => {
       <div className="max-w-2xl text-center lg:text-center">
         <div className="flex flex-col space-y-2 mb-10">
           <h1 className="text-white font-bold text-5xl" >
-            Get testnet XTZ on <span className="text-darkGreen">Etherlink</span>
+            Get testnet XTZ on <span className="text-neonGreen">Etherlink</span>
           </h1>
         </div>
         <div className="flex flex-col items-center">
