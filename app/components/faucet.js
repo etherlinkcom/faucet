@@ -1,7 +1,6 @@
 import Image from "next/image"
 import { useEffect, useState } from "react";
 import ReCAPTCHA from "react-google-recaptcha";
-import Auth from "./auth";
 
 import {
   ConnectWallet,
@@ -73,7 +72,7 @@ const Faucet = () => {
     return (
       walletStatus === "connected" && chainId === 128123 ?
         <button
-          onClick={txHash ? () => window.open(`https://explorer.etherlink.com/tx/${txHash}`, '_blank') : callFaucet}
+          onClick={txHash ? () => window.open(`https://testnet-explorer.etherlink.com/tx/${txHash}`, '_blank') : callFaucet}
           disabled={isLoading || !captchaCompleted}
           className={`flex flex-row items-center justify-center py-3 text-lg font-medium text-center text-black bg-white border-solid border-2 border-black rounded-md px-7 lg:px-6 lg:py-4 hover:bg-darkGreen hover:border-black hover:text-white ${isLoading || !captchaCompleted ? 'opacity-50 cursor-not-allowed' : ''}`}
         >
