@@ -14,7 +14,7 @@ import {
 const customTheme = lightTheme({
   colors: {
     primaryText: 'black',
-    primaryButtonBg: '#b6feda',
+    primaryButtonBg: '#38ff9c',
     primaryButtonText: 'black',
     secondaryButtonBg: '#59ad8c',
     connectedButtonBgHover: '#59ad8c',

@@ -73,7 +73,7 @@ const NavItem = ({ item, pathname }) => {
       <Link
         href={item.link}
         onClick={item.onClick ? item.onClick : null}
-        className={`inline-block px-4 py-2 text-lg font-normal no-underline rounded-md ${item.link === "/incubator" && pathname === "/incubator" ? "bg-darkGreen text-black hover:text-white" : "text-gray-200 hover:text-darkGreen"} cursor-pointer`}
+        className={`inline-block px-4 py-2 text-lg font-normal no-underline rounded-md ${item.link === "/incubator" && pathname === "/incubator" ? "bg-darkGreen text-black hover:text-white" : "text-gray-200 hover:text-neonGreen"} cursor-pointer`}
         target={item.link === "/incubator" ? "_self" : "_blank"}
         rel="noopener noreferrer">
         {item.name}
@@ -184,7 +184,7 @@ export default function Navbar() {
           </ul>
           {pathname !== "/faucet" && (
             <div className="relative mr-3 space-x-4 nav__item">
-              <button onClick={() => { setModalOpen(!modalOpen); setButtonColor(!buttonColor) }} className={`flex items-center px-4 py-3 text-black hover:bg-darkGreen ${buttonColor ? 'bg-darkGreen' : 'bg-white'} rounded-md md:ml-5`}>
+              <button onClick={() => { setModalOpen(!modalOpen); setButtonColor(!buttonColor) }} className={`flex items-center px-4 py-3 text-black hover:bg-neonGreen ${buttonColor ? 'bg-neonGreen' : 'bg-white'} rounded-md md:ml-5`}>
                 <span>Join the Community</span>
                 <svg className={`transition-transform duration-200 ml-1 w-4 h-4 ${modalOpen ? 'transform rotate-180' : 'transform rotate-270'}`} xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
