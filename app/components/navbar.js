@@ -130,19 +130,19 @@ export default function Navbar() {
         <Disclosure>
           {({ open }) => (
             <>
-              <div className="flex flex-wrap items-center justify-between w-full lg:w-auto">
+              <div className="flex flex-wrap items-center justify-between w-full -mt-5 lg:w-auto">
                 <Link href="/">
                   <span className="flex items-center space-x-1 text-3xl font-medium text-gray-100">
                     <span>
                       <Image
-                        src="/img/home/logo.png"
+                        src="/img/home/logo_beta_full.png"
                         alt="N"
-                        width={128}
-                        height={128}
-                        className="w-8 mr-2"
+                        width={512}
+                        height={512}
+                        className="w-52 mr-1"
                       />
                     </span>
-                    <span>Etherlink</span>
+                    {/* <span>Etherlink</span> */}
                   </span>
                 </Link>
 
