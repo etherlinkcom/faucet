@@ -99,7 +99,7 @@ const MobileMenu = ({ navigation }) => {
               {item.name}
             </Link>
         ))}
-        <Link href="https://x.com/etherlinkcom" className="w-full px-6 py-2 mt-3 text-center text-black bg-darkGreen rounded-md lg:ml-5">
+        <Link href="https://x.com/etherlink" className="w-full px-6 py-2 mt-3 text-center text-black bg-darkGreen rounded-md lg:ml-5">
           Join the Community
         </Link>
       </>
