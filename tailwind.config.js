@@ -9,20 +9,24 @@ module.exports = {
     extend: {
       colors: {
         trueGray: colors.neutral,
-        'lightGreen': '#b6feda',
-        'darkGreen': '#59ad8c',
-        'midGreen': '#9bfecd',
-        'neonGreen': '#38ff9c',
+        lightGreen: "#b6feda",
+        darkGreen: "#59ad8c",
+        midGreen: "#9bfecd",
+        neonGreen: "#38ff9c", // newGreen -> neonGreen
+        lightBlack: "#262626",
+        midBlack: "#1c1c1c",
+        darkBlack: "#171717",
+        white: "#ffffff",
       },
       screens: {
-        'max-sm': {'max': '640px'},
-        'max-md': {'max': '768px'},
-        'max-lg': {'max': '1024px'},
-        'max-xl': {'max': '1280px'},
-        'max-2xl': {'max': '1536px'},
+        "max-sm": { max: "640px" },
+        "max-md": { max: "768px" },
+        "max-lg": { max: "1024px" },
+        "max-xl": { max: "1280px" },
+        "max-2xl": { max: "1536px" },
       },
       borderWidth: {
-        '6': '6px',
+        6: "6px",
       },
     },
     fontFamily: {
@@ -33,5 +37,5 @@ module.exports = {
   variants: {
     extend: {},
   },
-  plugins: [require("@tailwindcss/aspect-ratio")],
+  plugins: [require("@tailwindcss/aspect-ratio"), require("flowbite/plugin")],
 };

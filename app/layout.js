@@ -1,11 +1,11 @@
-import ClientLayout from "./ClientLayout"
-import { Analytics } from '@vercel/analytics/react';
+import ClientLayout from "./ClientLayout";
+import { Analytics } from "@vercel/analytics/react";
 import FathomComponent from "./components/fathom";
-
+import { Navbar } from "@/app/components/Navbar/index";
 
 export const metadata = {
-  metadataBase: new URL('https://etherlink.com'),
-}
+  metadataBase: new URL("https://etherlink.com"),
+};
 
 export default function RootLayout({ children }) {
   return (
@@ -18,6 +18,7 @@ export default function RootLayout({ children }) {
       </head>
       <body>
         <Analytics />
+        <Navbar />
         <ClientLayout>
           <FathomComponent />
           {children}
@@ -26,6 +27,3 @@ export default function RootLayout({ children }) {
     </html>
   );
 }
-
-
-
