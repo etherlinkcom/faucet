@@ -18,8 +18,12 @@ export const NAVBAR_ITEMS = [
         link: "/",
       },
       {
-        name: "Explorer",
+        name: "Testnet explorer",
         link: "https://testnet-explorer.etherlink.com/",
+      },
+      {
+        name: "Mainnet explorer",
+        link: "https://explorer.etherlink.com/",
       },
       {
         name: "Blog",
