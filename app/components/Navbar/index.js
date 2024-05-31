@@ -26,7 +26,7 @@ export const Navbar = () => {
         />
       </Link>
       <div className="hidden md:flex items-center gap-6">
-        <div className="flex items-center pr-4 border-r border-[#414349B2] h-[30px] gap-8">
+        <div className="flex items-center pr-4 border-r border-[#414349B2] h-[30px] gap-3">
           {NAVBAR_ITEMS.map((item, index) => (
             <NavbarList {...item} key={index} />
           ))}
