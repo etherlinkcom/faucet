@@ -4,6 +4,7 @@ import FathomComponent from "./components/fathom";
 import { Navbar } from "@/app/components/Navbar/index";
 
 export const metadata = {
+  title: "Get XTZ on Etherlink faucet | Etherlink",
   metadataBase: new URL("https://etherlink.com"),
 };
 
