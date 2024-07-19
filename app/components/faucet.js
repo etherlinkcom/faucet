@@ -10,6 +10,7 @@ import {
   useConnectionStatus,
 } from "@thirdweb-dev/react";
 import { ClaimButton } from "./claimButton";
+import { AddTokenToWalletButton } from "./addTokenToWallet"
 
 const customTheme = lightTheme({
   colors: {
@@ -39,42 +40,6 @@ const Faucet = () => {
     { name: 'tzBTC', symbol: 'BTC', address: '0x6bDE94725379334b469449f4CF49bCfc85ebFb27', decimals: 18, logo: '/img/tokens/TZBTC.png' },
   ];
 
-
-  const addTokenToMetamask = async (token) => {
-    try {
-      await ethereum.request({
-        method: 'wallet_watchAsset',
-        params: {
-          type: 'ERC20',
-          options: {
-            address: token.address,
-            symbol: token.symbol,
-            decimals: token.decimals,
-            image: token.image, // TODO change to url
-          },
-        },
-      });
-    } catch (error) {
-      console.log(error);
-    }
-  }
-
-  const AddTokenToWalletButton = ({ token }) => {
-    return (
-      <button
-        onClick={() => addTokenToMetamask(token)}
-        className={`
-          flex flex-row items-center justify-center
-          text-sm font-medium text-center text-black
-          bg-zinc-200 border-solid border-2 border-black rounded-md
-          px-2 py-1 hover:bg-darkGreen hover:border-black
-          hover:text-white
-        `}
-      >
-        Add to Wallet
-      </button>
-    );
-  };
 
   const ConnectWalletButton = () => {
     return (
