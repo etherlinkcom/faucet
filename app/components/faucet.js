@@ -1,5 +1,5 @@
 import Image from "next/image"
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import ReCAPTCHA from "react-google-recaptcha";
 
 import {
@@ -64,7 +64,7 @@ const Faucet = () => {
         onClick={() => addTokenToMetamask(token)}
         className={`
           flex flex-row items-center justify-center
-          py-3 text-lg font-medium text-center text-black
+          text-sm font-medium text-center text-black
           bg-zinc-200 border-solid border-2 border-black rounded-md px-7
           lg:px-2 lg:py-1 hover:bg-darkGreen hover:border-black
           hover:text-white
@@ -118,7 +118,7 @@ const Faucet = () => {
           disabled={isLoading || !captchaCompleted}
           className={`
             flex flex-row items-center justify-center
-            py-3 text-lg font-medium text-center text-black
+            text-sm font-medium text-center text-black
             bg-zinc-200 border-solid border-2 border-black rounded-md px-7
             lg:px-2 lg:py-1 hover:bg-darkGreen hover:border-black
             hover:text-white ${isLoading || !captchaCompleted ? 'opacity-50 cursor-not-allowed' : ''}
@@ -207,14 +207,14 @@ const Faucet = () => {
                 <td className="px-6  text-sm font-medium text-white">{token.name}</td>
                 <td className="px-6 whitespace-nowrap text-sm text-white">{token.symbol}</td>
                 <td className="px-6 whitespace-nowrap text-sm text-white">{token.address}</td>
-                <td className="px-6 whitespace-nowrap text-sm text-white flex justify-center items-center">
+                <td className="px-6 whitespace-nowrap text-sm text-white ">
                   <ClaimButton
                     tokenAddress={token.address}
                     walletStatus={walletStatus}
                     captchaCompleted={captchaCompleted}
                   />
                 </td>
-                <td className="px-6 whitespace-nowrap text-sm text-white ">
+                <td className="px-6 whitespace-nowrap text-sm text-white">
                   <AddTokenToWalletButton token={token} />
                 </td>
               </tr>
