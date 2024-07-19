@@ -13,8 +13,6 @@ export const ClaimButton = ({ tokenAddress, walletStatus, captchaCompleted, chai
         }
     }, [txHash]);
 
-
-
     const callFaucet = async (tokenAddress, amount) => {
         const RATE_LIMIT_INTERVAL = 24 * 60 * 60 * 1000; // 1 Day
         const lastCall = localStorage.getItem(`faucetCallTimestamp_${tokenAddress}`);

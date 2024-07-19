@@ -26,7 +26,7 @@ export async function POST(request) {
         // If not XTZ
         else {
             // Create ERC20 contract
-            const abi = ["transfer(address to, uint256 value)"];
+            const abi = ["function transfer(address to, uint256 value) returns (bool)"];
             const erc20Contract = new ethers.Contract(tokenAddress, abi, wallet);
             // Send
             const txResponse = await erc20Contract.transfer(walletAddress, ethers.utils.parseUnits(amount));
