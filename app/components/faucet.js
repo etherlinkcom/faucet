@@ -22,14 +22,11 @@ const customTheme = lightTheme({
 });
 
 const Faucet = () => {
-  const [captchaCompleted, setCaptchaCompleted] = useState(false)
-  const [isLoading, setIsLoading] = useState(false);
-  const [txHash, setTxHash] = useState("")
+  const [captchaCompleted, setCaptchaCompleted] = useState(false);
 
   const address = useAddress();
   const walletStatus = useConnectionStatus();
   const chainId = useChainId();
-  const shortAddress = address ? `${address.slice(0, 6)}...${address.slice(-4)}` : address; // TODO remove
 
   const tokens = [
     { name: 'Wrapped XTZ', symbol: 'WXTZ', address: '0xB1Ea698633d57705e93b0E40c1077d46CD6A51d8', decimals: 18, logo: '/img/home/logo.png' },
@@ -41,11 +38,6 @@ const Faucet = () => {
     { name: 'tzBTC', symbol: 'tzBTC', address: '0x6bDE94725379334b469449f4CF49bCfc85ebFb27', decimals: 18, logo: '/img/tokens/TZBTC.png' },
   ];
 
-  useEffect(() => {
-    if (txHash) {
-      setIsLoading(false);
-    }
-  }, [txHash]);
 
   const addTokenToMetamask = async (token) => {
     try {
@@ -57,7 +49,7 @@ const Faucet = () => {
             address: token.address,
             symbol: token.symbol,
             decimals: token.decimals,
-            image: token.image,
+            image: token.image, // TODO change to url
           },
         },
       });
@@ -66,7 +58,7 @@ const Faucet = () => {
       console.log(error);
     }
   }
-  const AddTokenToMetamaskButton = ({ token }) => {
+  const AddTokenToWalletButton = ({ token }) => {
     return (
       <button
         onClick={() => addTokenToMetamask(token)}
@@ -78,30 +70,12 @@ const Faucet = () => {
           hover:text-white
         `}
       >
-        Add to Metamask
+        Add to Wallet
       </button>
     );
   };
 
-  const callFaucet = async (tokenAddress) => {
-    const body = JSON.stringify({ walletAddress: address, tokenAddress: tokenAddress });
-    setIsLoading(true);
-    const response = await fetch('/api/faucet', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: body,
-    });
 
-    if (response.ok) {
-      const data = await response.json();
-      setTxHash(data.body.receipt.transactionHash);
-      setTokensClaimed(true);
-    } else {
-      console.error('Error:', response.status);
-    }
-  }
 
   const ConnectWalletButton = () => {
     return (
@@ -115,6 +89,28 @@ const Faucet = () => {
   }
 
   const ClaimButton = ({ tokenAddress, walletStatus, captchaCompleted }) => {
+    const [isLoading, setIsLoading] = useState(false);
+    const [txHash, setTxHash] = useState("");
+
+    const callFaucet = async (tokenAddress) => {
+      const body = JSON.stringify({ walletAddress: address, tokenAddress: tokenAddress });
+      setIsLoading(true);
+      const response = await fetch('/api/faucet', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: body,
+      });
+
+      if (response.ok) {
+        const data = await response.json();
+        setTxHash(data.body.receipt.transactionHash);
+      } else {
+        console.error('Error:', response.status);
+      }
+    }
+
     return (
       walletStatus === "connected" && chainId === 128123 ?
         <button
@@ -219,7 +215,7 @@ const Faucet = () => {
                   />
                 </td>
                 <td className="px-6 whitespace-nowrap text-sm text-white ">
-                  <AddTokenToMetamaskButton token={token} />
+                  <AddTokenToWalletButton token={token} />
                 </td>
               </tr>
             ))}
@@ -249,7 +245,7 @@ const Faucet = () => {
             />
           )}
         </div>
-        {!isLoading && walletStatus === "connected" && chainId === 128123 && (
+        {walletStatus === "connected" && chainId === 128123 && (
           <TokenButtonsTable
             tokens={tokens}
             walletStatus={walletStatus}
