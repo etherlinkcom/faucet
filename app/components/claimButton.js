@@ -1,10 +1,11 @@
 import { useEffect, useState } from "react";
 import Image from "next/image";
+import toast, { Toaster } from 'react-hot-toast';
 
 export const ClaimButton = ({ tokenAddress, walletStatus, captchaCompleted, chainId, address, amount }) => {
     const [isLoading, setIsLoading] = useState(false);
     const [txHash, setTxHash] = useState("");
-    const [waitMessage, setWaitMessage] = useState("")
+    const [rateLimited, setRateLimited] = useState(false)
 
     useEffect(() => {
         if (txHash) {
@@ -12,13 +13,16 @@ export const ClaimButton = ({ tokenAddress, walletStatus, captchaCompleted, chai
         }
     }, [txHash]);
 
+
+
     const callFaucet = async (tokenAddress, amount) => {
         const RATE_LIMIT_INTERVAL = 24 * 60 * 60 * 1000; // 1 Day
         const lastCall = localStorage.getItem(`faucetCallTimestamp_${tokenAddress}`);
         const now = Date.now();
 
         if (lastCall && (now - lastCall) < RATE_LIMIT_INTERVAL) {
-            setWaitMessage(`${Math.ceil(((RATE_LIMIT_INTERVAL - (now - lastCall)) / 1000 / 60 / 60))} hours`);
+            setRateLimited(true)
+            toast.error('Must wait 1 day before claiming testnet tokens.');
             return;
         }
 
@@ -49,40 +53,39 @@ export const ClaimButton = ({ tokenAddress, walletStatus, captchaCompleted, chai
                     txHash ?
                         () => window.open(`https://testnet-explorer.etherlink.com/tx/${txHash}`, '_blank') :
                         () => callFaucet(tokenAddress, amount)}
-                disabled={isLoading || !captchaCompleted}
+                disabled={isLoading || !captchaCompleted || rateLimited}
                 className={`
-            flex flex-row items-center justify-center
-            text-sm font-medium text-center text-black
-            bg-zinc-200 border-solid border-2 border-black rounded-md px-2
-            py-1 hover:bg-darkGreen hover:border-black
-            hover:text-white ${isLoading || !captchaCompleted || waitMessage !== "" ? 'opacity-50 cursor-not-allowed' : ''}
-            ${isLoading || txHash ? "px-4" : "px-2"}
-            `}
+                    flex flex-row items-center justify-center
+                    text-sm font-medium text-center text-black
+                    border-solid border-2 border-black rounded-md px-2
+                    py-1  hover:border-black
+                    ${isLoading || !captchaCompleted ? 'opacity-50 cursor-not-allowed' : ''}
+                    ${isLoading || txHash ? "px-4" : "px-2"}
+                    ${rateLimited ? "opacity-50 cursor-not-allowed bg-red-500" : "bg-zinc-200 hover:bg-darkGreen hover:text-white"}
+                `}
             >
-                {waitMessage !== "" ? <>
-                    {waitMessage}
-                </> :
-                    isLoading ? <>
+                {isLoading ? <>
+                    <Image
+                        src="/img/home/logo.png"
+                        alt="Loading..."
+                        width={32}
+                        height={32}
+                        className={`w-8 mr-2 ${isLoading ? 'spin-logo' : ''}`}
+                    />
+                    Loading...
+                </> : txHash ?
+                    <>
                         <Image
                             src="/img/home/logo.png"
-                            alt="Loading..."
+                            alt="logo"
                             width={32}
                             height={32}
-                            className={`w-8 mr-2 ${isLoading ? 'spin-logo' : ''}`}
+                            className="w-8 mr-2"
                         />
-                        Loading...
-                    </> : txHash ?
-                        <>
-                            <Image
-                                src="/img/home/logo.png"
-                                alt="logo"
-                                width={32}
-                                height={32}
-                                className="w-8 mr-2"
-                            />
-                            {`${txHash.slice(0, 6)}`}
-                        </> :
-                        `Send`}
+                        {`${txHash.slice(0, 6)}`}
+                    </> :
+                    `Send`}
+                <Toaster />
             </button> : ""
     )
 }
