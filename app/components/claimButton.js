@@ -82,7 +82,7 @@ export const ClaimButton = ({ tokenAddress, walletStatus, captchaCompleted, chai
                             />
                             {`${txHash.slice(0, 6)}`}
                         </> :
-                        `Send 1`}
+                        `Send`}
             </button> : ""
     )
 }

@@ -67,19 +67,19 @@ const Faucet = () => {
                 scope="col"
                 className="px-6 text-center text-xs font-medium text-white uppercase tracking-wider"
               >
-                Token Name
+                Name
               </th>
               <th
                 scope="col"
                 className="px-6 text-center text-xs font-medium text-white uppercase tracking-wider"
               >
-                Token Symbol
+                Symbol
               </th>
               <th
                 scope="col"
                 className="px-6 text-center text-xs font-medium text-white uppercase tracking-wider"
               >
-                Token Address
+                Address
               </th>
               <th
                 scope="col"
