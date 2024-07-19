@@ -3,8 +3,6 @@ import { ethers } from 'ethers';
 
 export async function POST(request) {
     try {
-        // const { walletAddress, token } = await request.json()
-        // based on token do different txs here
         const { walletAddress, tokenAddress } = await request.json();
         const privateKey = process.env.PRIVATE_KEY;
         const provider = new ethers.providers.JsonRpcProvider(process.env.JSON_RPC_URL);
@@ -17,7 +15,6 @@ export async function POST(request) {
                 value: ethers.utils.parseEther("1"),
                 gasPrice: await wallet.provider.getGasPrice(),
             };
-
             const txResponse = await wallet.sendTransaction(transaction);
             const receipt = await txResponse.wait();
             return NextResponse.json(
@@ -42,12 +39,8 @@ export async function POST(request) {
     } catch (error) {
         console.error(error);
         return NextResponse.json(
-            {
-                body: "error",
-            },
-            {
-                status: 500,
-            },
+            { body: "error" },
+            { status: 500 },
         );
     }
 };

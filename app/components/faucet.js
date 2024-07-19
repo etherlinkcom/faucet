@@ -1,4 +1,4 @@
-import Image from "next/image"
+import Image from "next/image";
 import { useState } from "react";
 import ReCAPTCHA from "react-google-recaptcha";
 
@@ -9,6 +9,7 @@ import {
   useAddress,
   useConnectionStatus,
 } from "@thirdweb-dev/react";
+import { ClaimButton } from "./claimButton";
 
 const customTheme = lightTheme({
   colors: {
@@ -57,6 +58,7 @@ const Faucet = () => {
       console.log(error);
     }
   }
+
   const AddTokenToWalletButton = ({ token }) => {
     return (
       <button
@@ -64,8 +66,8 @@ const Faucet = () => {
         className={`
           flex flex-row items-center justify-center
           text-sm font-medium text-center text-black
-          bg-zinc-200 border-solid border-2 border-black rounded-md px-7
-          lg:px-2 lg:py-1 hover:bg-darkGreen hover:border-black
+          bg-zinc-200 border-solid border-2 border-black rounded-md
+          px-2 py-1 hover:bg-darkGreen hover:border-black
           hover:text-white
         `}
       >
@@ -73,8 +75,6 @@ const Faucet = () => {
       </button>
     );
   };
-
-
 
   const ConnectWalletButton = () => {
     return (
@@ -84,67 +84,6 @@ const Faucet = () => {
         modalSize={"wide"}
       // btnTitle="Connect Etherlink To Metamask"
       />
-    )
-  }
-
-  const ClaimButton = ({ tokenAddress, walletStatus, captchaCompleted }) => {
-    const [isLoading, setIsLoading] = useState(false);
-    const [txHash, setTxHash] = useState("");
-
-    const callFaucet = async (tokenAddress) => {
-      const body = JSON.stringify({ walletAddress: address, tokenAddress: tokenAddress });
-      setIsLoading(true);
-      const response = await fetch('/api/faucet', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: body,
-      });
-
-      if (response.ok) {
-        const data = await response.json();
-        setTxHash(data.body.receipt.transactionHash);
-      } else {
-        console.error('Error:', response.status);
-      }
-    }
-
-    return (
-      walletStatus === "connected" && chainId === 128123 ?
-        <button
-          onClick={txHash ? () => window.open(`https://testnet-explorer.etherlink.com/tx/${txHash}`, '_blank') : () => callFaucet(tokenAddress)}
-          disabled={isLoading || !captchaCompleted}
-          className={`
-            flex flex-row items-center justify-center
-            text-sm font-medium text-center text-black
-            bg-zinc-200 border-solid border-2 border-black rounded-md px-7
-            lg:px-2 lg:py-1 hover:bg-darkGreen hover:border-black
-            hover:text-white ${isLoading || !captchaCompleted ? 'opacity-50 cursor-not-allowed' : ''}
-            `}
-        >
-          {isLoading ? <>
-            <Image
-              src="/img/home/logo.png"
-              alt="Loading..."
-              width={32}
-              height={32}
-              className={`w-8 mr-2 ${isLoading ? 'spin-logo' : ''}`}
-            />
-            Loading...
-          </> : txHash ?
-            <>
-              <Image
-                src="/img/home/logo.png"
-                alt="logo"
-                width={32}
-                height={32}
-                className="w-8 mr-2"
-              />
-              {`${txHash.slice(0, 6)}...${txHash.slice(-4)}`}
-            </> :
-            `Send 1`}
-        </button> : ""
     )
   }
 
@@ -195,7 +134,7 @@ const Faucet = () => {
           <tbody className="bg-black-800 divide-y divide-zinc-600">
             {tokens.map((token, index) => (
               <tr key={index} className="bg-black-800">
-                <td className="px-6  text-sm font-medium text-white">
+                <td className="px-6 text-sm font-medium text-white">
                   <Image
                     src={token.logo}
                     alt=''
@@ -206,11 +145,13 @@ const Faucet = () => {
                 <td className="px-6  text-sm font-medium text-white">{token.name}</td>
                 <td className="px-6 whitespace-nowrap text-sm text-white">{token.symbol}</td>
                 <td className="px-6 whitespace-nowrap text-sm text-white">{token.address}</td>
-                <td className="px-6 whitespace-nowrap text-sm text-white ">
+                <td className="px-6 whitespace-nowrap text-sm text-white flex justify-center items-center mt-1">
                   <ClaimButton
                     tokenAddress={token.address}
                     walletStatus={walletStatus}
                     captchaCompleted={captchaCompleted}
+                    chainId={chainId}
+                    address={address}
                   />
                 </td>
                 <td className="px-6 whitespace-nowrap text-sm text-white">
