@@ -32,7 +32,6 @@ const Faucet = () => {
 
   const tokens = [
     { name: 'Wrapped XTZ', symbol: 'WXTZ', address: '0xB1Ea698633d57705e93b0E40c1077d46CD6A51d8', decimals: 18, logo: '/img/home/logo.png' },
-    { name: 'Iguana Token', symbol: 'IGN', address: '0xBeEfb119631691a1e0D9378fA7864fC6E67A72Ad', decimals: 18, logo: '/img/tokens/IGUANA.avif' },
     { name: 'Etherlink USD', symbol: 'eUSD', address: '0x1A71f491fb0Ef77F13F8f6d2a927dd4C969ECe4f', decimals: 18, logo: '/img/tokens/EUSD.png' },
     { name: 'Tether USD', symbol: 'USDT', address: '0xD21B917D2f4a4a8E3D12892160BFFd8f4cd72d4F', decimals: 18, logo: '/img/tokens/USDT.png' },
     { name: 'USD Coin', symbol: 'USDC', address: '0xa7c9092A5D2C3663B7C5F714dbA806d02d62B58a', decimals: 18, logo: '/img/tokens/USDC.png' },
