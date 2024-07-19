@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import Image from "next/image";
 
-export const ClaimButton = ({ tokenAddress, walletStatus, captchaCompleted, chainId, address }) => {
+export const ClaimButton = ({ tokenAddress, walletStatus, captchaCompleted, chainId, address, amount }) => {
     const [isLoading, setIsLoading] = useState(false);
     const [txHash, setTxHash] = useState("");
     const [waitMessage, setWaitMessage] = useState("")
@@ -12,7 +12,7 @@ export const ClaimButton = ({ tokenAddress, walletStatus, captchaCompleted, chai
         }
     }, [txHash]);
 
-    const callFaucet = async (tokenAddress) => {
+    const callFaucet = async (tokenAddress, amount) => {
         const RATE_LIMIT_INTERVAL = 24 * 60 * 60 * 1000; // 1 Day
         const lastCall = localStorage.getItem(`faucetCallTimestamp_${tokenAddress}`);
         const now = Date.now();
@@ -23,7 +23,7 @@ export const ClaimButton = ({ tokenAddress, walletStatus, captchaCompleted, chai
         }
 
         setIsLoading(true);
-        const body = JSON.stringify({ walletAddress: address, tokenAddress: tokenAddress });
+        const body = JSON.stringify({ walletAddress: address, tokenAddress: tokenAddress, amount: amount });
         const response = await fetch('/api/faucet', {
             method: 'POST',
             headers: {
@@ -48,7 +48,7 @@ export const ClaimButton = ({ tokenAddress, walletStatus, captchaCompleted, chai
                 onClick={
                     txHash ?
                         () => window.open(`https://testnet-explorer.etherlink.com/tx/${txHash}`, '_blank') :
-                        () => callFaucet(tokenAddress)}
+                        () => callFaucet(tokenAddress, amount)}
                 disabled={isLoading || !captchaCompleted}
                 className={`
             flex flex-row items-center justify-center
