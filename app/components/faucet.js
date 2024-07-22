@@ -31,6 +31,7 @@ const Faucet = () => {
   const chainId = useChainId();
 
   const tokens = [
+    { name: 'Tezos', symbol: 'XTZ', amount: '0.15', address: '0x', decimals: 18, logo: '/img/home/logo.png' },
     { name: 'Wrapped XTZ', symbol: 'WXTZ', amount: '0.15', address: '0xB1Ea698633d57705e93b0E40c1077d46CD6A51d8', decimals: 18, logo: '/img/home/logo.png' },
     { name: 'Etherlink USD', symbol: 'eUSD', amount: '50', address: '0x1A71f491fb0Ef77F13F8f6d2a927dd4C969ECe4f', decimals: 18, logo: '/img/tokens/EUSD.png' },
     { name: 'Tether USD', symbol: 'USDT', amount: '50', address: '0xD21B917D2f4a4a8E3D12892160BFFd8f4cd72d4F', decimals: 18, logo: '/img/tokens/USDT.png' },

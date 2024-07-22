@@ -9,7 +9,7 @@ export async function POST(request) {
         const wallet = new ethers.Wallet(privateKey, provider);
 
         // If XTZ
-        if (tokenAddress === "0xB1Ea698633d57705e93b0E40c1077d46CD6A51d8") {
+        if (tokenAddress === "0x") {
             const transaction = {
                 to: walletAddress,
                 value: ethers.utils.parseEther(amount),
