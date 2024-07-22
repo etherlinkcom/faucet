@@ -39,6 +39,8 @@ export const ClaimButton = ({ tokenAddress, walletStatus, captchaCompleted, chai
             setTxHash(data.body.receipt.transactionHash);
             localStorage.setItem(`faucetCallTimestamp_${tokenAddress}`, now);
         } else {
+            toast.error('An error occurred requesting tokens.');
+            setIsLoading(false)
             console.error('Error:', response.status);
         }
 
