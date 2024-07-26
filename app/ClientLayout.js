@@ -33,17 +33,6 @@ function ThirdWebConfig({ children }) {
   return (
     <ThirdwebProvider clientId={process.env.THIRDWEB_CLIENT_ID}
       activeChain={activeChain}
-      supportedWallets={[
-        metamaskWallet({ recommended: true }),
-        walletConnect(),
-        localWallet(),
-        // embeddedWallet({
-        //   auth: {
-        //     options: ["email", "apple", "google"],
-        //   },
-        // }),
-        // phantomWallet({ recommended: true }),
-      ]}
       dAppMeta={dAppMeta}>
       {children}
     </ThirdwebProvider>
