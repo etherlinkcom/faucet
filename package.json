@@ -17,6 +17,7 @@
     "@headlessui/react": "^1.7.14",
     "@heroicons/react": "^2.0.17",
     "@tailwindcss/aspect-ratio": "^0.4.2",
+    "@thirdweb-dev/chains": "^0.1.120",
     "@thirdweb-dev/react": "4.3.1",
     "@thirdweb-dev/sdk": "4.0.26",
     "@typeform/embed-react": "^3.8.0",
