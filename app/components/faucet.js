@@ -1,16 +1,13 @@
-import Image from "next/image";
 import { useState } from "react";
 import ReCAPTCHA from "react-google-recaptcha";
-
 import {
   ConnectWallet,
   lightTheme,
-  useChainId,
-  useAddress,
   useConnectionStatus,
+  useWallet
 } from "@thirdweb-dev/react";
-import { ClaimButton } from "./claimButton";
-import { AddTokenToWalletButton } from "./addTokenToWallet"
+
+import { TokenButtonsTable } from "./TokenButtonsTable";
 
 const customTheme = lightTheme({
   colors: {
@@ -26,9 +23,8 @@ const customTheme = lightTheme({
 const Faucet = () => {
   const [captchaCompleted, setCaptchaCompleted] = useState(false);
 
-  const address = useAddress();
   const walletStatus = useConnectionStatus();
-  const chainId = useChainId();
+  const wallet = useWallet();
 
   const tokens = [
     { name: 'Tezos', symbol: 'XTZ', amount: '0.15', address: '0x', decimals: 18, logo: '/img/home/logo.png' },
@@ -47,89 +43,10 @@ const Faucet = () => {
         switchToActiveChain={true}
         theme={customTheme}
         modalSize={"wide"}
-      // btnTitle="Connect Etherlink To Metamask"
       />
     )
   }
 
-  const TokenButtonsTable = ({ tokens, walletStatus, captchaCompleted }) => {
-    return (
-      <div className="overflow-x-auto">
-        <table className="w-full divide-y divide-zinc-600 bg-black-800 text-center">
-          <thead className="bg-black-800">
-            <tr>
-              <th
-                scope="col"
-                className="px-6 text-center text-xs font-medium text-white uppercase tracking-wider"
-              >
-                Image
-              </th>
-              <th
-                scope="col"
-                className="px-6 text-center text-xs font-medium text-white uppercase tracking-wider"
-              >
-                Name
-              </th>
-              <th
-                scope="col"
-                className="px-6 text-center text-xs font-medium text-white uppercase tracking-wider"
-              >
-                Symbol
-              </th>
-              <th
-                scope="col"
-                className="px-6 text-center text-xs font-medium text-white uppercase tracking-wider"
-              >
-                Address
-              </th>
-              <th
-                scope="col"
-                className="px-6 text-center text-xs font-medium text-white uppercase tracking-wider"
-              >
-                Action
-              </th>
-              <th
-                scope="col"
-                className="px-6 text-center text-xs font-medium text-white uppercase tracking-wider"
-              >
-                Add To Wallet
-              </th>
-            </tr>
-          </thead>
-          <tbody className="bg-black-800 divide-y divide-zinc-600">
-            {tokens.map((token, index) => (
-              <tr key={index} className="bg-black-800">
-                <td className="px-6 text-sm font-medium text-white">
-                  <Image
-                    src={token.logo}
-                    alt=''
-                    width={32}
-                    height={32}
-                  />
-                </td>
-                <td className="px-6  text-sm font-medium text-white">{token.name}</td>
-                <td className="px-6 whitespace-nowrap text-sm text-white">{token.symbol}</td>
-                <td className="px-6 whitespace-nowrap text-sm text-white">{token.address}</td>
-                <td className="px-6 whitespace-nowrap text-sm text-white flex justify-center items-center mt-1">
-                  <ClaimButton
-                    tokenAddress={token.address}
-                    walletStatus={walletStatus}
-                    captchaCompleted={captchaCompleted}
-                    chainId={chainId}
-                    address={address}
-                    amount={token.amount}
-                  />
-                </td>
-                <td className="px-6 whitespace-nowrap text-sm text-white">
-                  <AddTokenToWalletButton token={token} />
-                </td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
-      </div>
-    )
-  };
 
   return (
     <div className="flex items-center justify-center w-full lg:w-1/2 min-w-1/2 rounded-lg mt-10 mb-10">
@@ -141,7 +58,7 @@ const Faucet = () => {
         </div>
         <div className="flex flex-col items-center">
           <ConnectWalletButton />
-          {walletStatus === "connected" && chainId === 128123 && (
+          {walletStatus === "connected"  && (
             <ReCAPTCHA
               sitekey="6Lcbu-AoAAAAAOPS85LI3sqIvAwErDKdtZJ8d1Xh"
               onChange={() => setCaptchaCompleted(true)}
@@ -151,11 +68,12 @@ const Faucet = () => {
             />
           )}
         </div>
-        {walletStatus === "connected" && chainId === 128123 && (
+        {walletStatus === "connected"  && (
           <TokenButtonsTable
             tokens={tokens}
             walletStatus={walletStatus}
             captchaCompleted={captchaCompleted}
+            wallet={wallet}
           />
         )}
       </div>
