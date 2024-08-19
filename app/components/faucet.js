@@ -31,7 +31,6 @@ const Faucet = () => {
   const walletStatus = useConnectionStatus();
   const chainId = useChainId();
   const wallet = useWallet();
-  console.log({wallet})
 
   const tokens = [
     { name: 'Tezos', symbol: 'XTZ', amount: '0.15', address: '0x', decimals: 18, logo: '/img/home/logo.png' },
