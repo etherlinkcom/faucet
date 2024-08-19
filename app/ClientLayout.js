@@ -3,24 +3,11 @@
 import { ThemeProvider } from "next-themes";
 import { FaucetProvider } from "./contexts/FaucetContext";
 import { metamaskWallet, rabbyWallet, ThirdwebProvider, walletConnect } from "@thirdweb-dev/react";
+import { EtherlinkTestnet } from "@thirdweb-dev/chains"
 import "../public/css/tailwind.css";
 
 
 function ThirdWebConfig({ children }) {
-  const activeChain = {
-    chainId: 128123,
-    rpc: ["https://node.ghostnet.etherlink.com"],
-    nativeCurrency: {
-      decimals: 18,
-      name: "XTZ",
-      symbol: "XTZ",
-    },
-    shortName: "etherlink",
-    slug: "etherlink",
-    testnet: true,
-    chain: "Etherlink",
-    name: "Etherlink Testnet",
-  };
 
   const dAppMeta = {
     name: "Etherlink Testnet Faucet",
@@ -32,7 +19,8 @@ function ThirdWebConfig({ children }) {
 
   return (
     <ThirdwebProvider clientId={process.env.THIRDWEB_CLIENT_ID}
-      activeChain={activeChain}
+      activeChain={EtherlinkTestnet}
+      supportedChains={[EtherlinkTestnet]}
       supportedWallets={[
         metamaskWallet({ recommended: true }),
         walletConnect(),
