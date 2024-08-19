@@ -2,7 +2,7 @@
 
 import { ThemeProvider } from "next-themes";
 import { FaucetProvider } from "./contexts/FaucetContext";
-import { ThirdwebProvider, metamaskWallet, localWallet, walletConnect, phantomWallet, embeddedWallet } from "@thirdweb-dev/react";
+import { metamaskWallet, rabbyWallet, ThirdwebProvider, walletConnect } from "@thirdweb-dev/react";
 import "../public/css/tailwind.css";
 
 
@@ -33,6 +33,18 @@ function ThirdWebConfig({ children }) {
   return (
     <ThirdwebProvider clientId={process.env.THIRDWEB_CLIENT_ID}
       activeChain={activeChain}
+      supportedWallets={[
+        metamaskWallet({ recommended: true }),
+        walletConnect(),
+        rabbyWallet()
+        // localWallet(),
+        // embeddedWallet({
+        //   auth: {
+        //     options: ["email", "apple", "google"],
+        //   },
+        // }),
+        // phantomWallet({ recommended: true }), // Doesn't support Etherlink yet
+      ]}
       dAppMeta={dAppMeta}>
       {children}
     </ThirdwebProvider>
