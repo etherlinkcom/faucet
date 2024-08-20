@@ -14,10 +14,6 @@ const NAVS = [
 const Footer = () => {
   return (
     <Container className="relative flex flex-col pb-6 pt-[104px]">
-      <div
-        className="block absolute top-0 left-1/2 -translate-x-1/2
-          w-full h-full bg-[url('/img/home/gradient.svg')] bg-no-repeat bg-cover bg-top"
-      />
       {/* top */}
       <div className="flex flex-col md:flex-row justify-between md:items-end border-b border-[#515151] pb-10 md:pb-6 z-50">
         <div className="flex flex-col justify-start items-center md:items-start">
