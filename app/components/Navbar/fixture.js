@@ -1,8 +1,22 @@
 export const NAVBAR_ITEMS = [
   {
+    dropdown: true,
+    title: "Bridge",
+    items: [
+      {
+        name: "EVM bridge",
+        link: "https://etherlinkbridge.com",
+      },
+      {
+        name: "Tezos bridge",
+        link: "https://bridge.etherlink.com",
+      },
+    ],
+  },
+  {
     dropdown: false,
     title: "Ecosystem",
-    link: "https://etherlink.com/ecosystem",
+    link: "/ecosystem",
   },
   {
     dropdown: false,
@@ -10,13 +24,14 @@ export const NAVBAR_ITEMS = [
     link: "https://docs.etherlink.com/",
   },
   {
+    dropdown: false,
+    title: "Faucet",
+    link: "https://faucet.etherlink.com/",
+  },
+  {
     dropdown: true,
     title: "Resources",
     items: [
-      {
-        name: "Faucet",
-        link: "/",
-      },
       {
         name: "Testnet explorer",
         link: "https://testnet-explorer.etherlink.com/",

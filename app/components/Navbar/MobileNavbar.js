@@ -1,11 +1,11 @@
-"use client";
 import React, { useEffect, useState } from "react";
 import { NAVBAR_ITEMS } from "./fixture";
 import Image from "next/image";
 import Link from "next/link";
 import { X, Discord } from "../icons";
 import { Drawer } from "flowbite-react";
-import { isExternalLink } from "./index";
+import { isExternalLink } from ".";
+import { EtherlinkLogo } from "../Icons/EtherlinkLogo";
 
 const customDrawerTheme = {
   root: {
@@ -48,19 +48,7 @@ export const MobileNavbar = ({ isOpen, handleClose }) => {
       theme={customDrawerTheme}
       position="right"
     >
-      <Drawer.Header
-        titleIcon={() => (
-          <Link href="/" onClick={handleClose}>
-            <Image
-              src="/img/home/beta_logo.svg"
-              alt="Etherlink Beta Logo"
-              width={190}
-              height={120}
-              className="-mt-8"
-            />
-          </Link>
-        )}
-      />
+      <Drawer.Header titleIcon={() => <EtherlinkLogo />} />
       <div className="flex flex-col w-full gap-4">
         {NAVBAR_ITEMS.map((item, index) => {
           if (!!item.dropdown && !!item.items) {
@@ -88,7 +76,7 @@ export const MobileNavbar = ({ isOpen, handleClose }) => {
         })}
         <div className="flex flex-col gap-6 mt-4 px-2 text-gray-300 hover:text-white text-base transition-all duration-500">
           <Link
-            href="https://x.com/etherlink"
+            href="https://twitter.com/etherlink"
             target="_blank"
             rel="noopener noreferrer"
             className="flex items-center"
