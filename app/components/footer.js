@@ -8,7 +8,10 @@ import { X, Discord, GitHub } from "./icons";
 const NAVS = [
   { name: "Blog", link: "https://medium.com/@etherlink" },
   { name: "Documentation", link: "https://docs.etherlink.com" },
-  // { name: 'Brand Assets', link: '/Etherlink_Brand_Assets.zip' }
+  {
+    name: "Brand Assets",
+    link: "https://drive.google.com/drive/folders/1DUhC05bVlISJ2i77kCNP_Tw-G5b48IRT",
+  },
 ];
 
 const Footer = () => {
