@@ -12,7 +12,7 @@ module.exports = {
         lightGreen: "#b6feda",
         darkGreen: "#59ad8c",
         midGreen: "#9bfecd",
-        neonGreen: "#38ff9c", // newGreen -> neonGreen
+        newGreen: "#38ff9c",
         lightBlack: "#262626",
         midBlack: "#1c1c1c",
         darkBlack: "#171717",

@@ -1,11 +1,11 @@
-"use client";
 import React, { useEffect, useState } from "react";
 import { NAVBAR_ITEMS } from "./fixture";
 import Image from "next/image";
 import Link from "next/link";
 import { X, Discord } from "../icons";
 import { Drawer } from "flowbite-react";
-import { isExternalLink } from "./index";
+import { isExternalLink } from ".";
+import { EtherlinkLogo } from "../Icons/EtherlinkLogo";
 
 const customDrawerTheme = {
   root: {
@@ -22,7 +22,7 @@ const customDrawerTheme = {
   header: {
     inner: {
       closeButton:
-        "absolute end-6 top-9 flex h-8 w-8 items-center justify-center rounded-lg bg-transparent text-sm text-white hover:bg-darkBlack",
+        "absolute end-6 top-9 right-0 flex h-8 w-8 items-center justify-center rounded-lg bg-transparent text-sm text-transparent hover:bg-darkBlack",
       closeIcon: "h-6 w-6",
     },
   },
@@ -49,17 +49,8 @@ export const MobileNavbar = ({ isOpen, handleClose }) => {
       position="right"
     >
       <Drawer.Header
-        titleIcon={() => (
-          <Link href="/" onClick={handleClose}>
-            <Image
-              src="/img/home/beta_logo.svg"
-              alt="Etherlink Beta Logo"
-              width={190}
-              height={120}
-              className="-mt-8"
-            />
-          </Link>
-        )}
+        titleIcon={() => <EtherlinkLogo />}
+        closeIcon={() => <img src="/close.svg" alt="close icon" />}
       />
       <div className="flex flex-col w-full gap-4">
         {NAVBAR_ITEMS.map((item, index) => {
@@ -88,7 +79,7 @@ export const MobileNavbar = ({ isOpen, handleClose }) => {
         })}
         <div className="flex flex-col gap-6 mt-4 px-2 text-gray-300 hover:text-white text-base transition-all duration-500">
           <Link
-            href="https://x.com/etherlink"
+            href="https://twitter.com/etherlink"
             target="_blank"
             rel="noopener noreferrer"
             className="flex items-center"
