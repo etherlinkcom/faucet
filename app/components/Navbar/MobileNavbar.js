@@ -22,7 +22,7 @@ const customDrawerTheme = {
   header: {
     inner: {
       closeButton:
-        "absolute end-6 top-9 flex h-8 w-8 items-center justify-center rounded-lg bg-transparent text-sm text-white hover:bg-darkBlack",
+        "absolute end-6 top-9 right-0 flex h-8 w-8 items-center justify-center rounded-lg bg-transparent text-sm text-transparent hover:bg-darkBlack",
       closeIcon: "h-6 w-6",
     },
   },
@@ -48,7 +48,10 @@ export const MobileNavbar = ({ isOpen, handleClose }) => {
       theme={customDrawerTheme}
       position="right"
     >
-      <Drawer.Header titleIcon={() => <EtherlinkLogo />} />
+      <Drawer.Header
+        titleIcon={() => <EtherlinkLogo />}
+        closeIcon={() => <img src="/close.svg" alt="close icon" />}
+      />
       <div className="flex flex-col w-full gap-4">
         {NAVBAR_ITEMS.map((item, index) => {
           if (!!item.dropdown && !!item.items) {

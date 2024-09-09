@@ -11,7 +11,6 @@ export const EtherlinkLogo = () => {
           alt="Etherlink Beta Logo"
           width={160}
           height={160}
-          className="w-[158px] h-[40px]"
         />
       </div>
     </Link>

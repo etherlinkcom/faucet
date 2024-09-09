@@ -18,7 +18,7 @@ const Footer = () => {
   return (
     <Container className="relative flex flex-col pb-6 pt-[104px]">
       {/* top */}
-      <div className="flex flex-col md:flex-row justify-between md:items-end border-b border-[#515151] pb-10 md:pb-6 z-50">
+      <div className="flex flex-col md:flex-row justify-between md:items-end border-b border-[#515151] pb-10 md:pb-6 z-10">
         <div className="flex flex-col justify-start items-center md:items-start">
           <EtherlinkLogo />
           <div className="flex flex-col md:flex-row mt-6 text-center gap-6 md:gap-0 hover:cursor-pointer">

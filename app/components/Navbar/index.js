@@ -16,7 +16,7 @@ export const Navbar = () => {
   const handleClose = () => setIsOpen(false);
 
   return (
-    <Container className="relative flex justify-between items-center pt-8 lg:pt-[66px] z-[999] md:max-w-[1536px]">
+    <Container className="relative flex justify-between items-center pt-8 lg:pt-[66px] z-20 md:max-w-[1536px]">
       <div className="flex-shrink-0">
         <EtherlinkLogo />
       </div>
@@ -29,7 +29,7 @@ export const Navbar = () => {
         {/* social links */}
         <div className="flex items-center gap-2">
           <Link
-            href="https://twitter.com/etherlink"
+            href="https://x.com/etherlink"
             target="_blank"
             rel="noopener noreferrer"
           >
