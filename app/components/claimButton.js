@@ -51,7 +51,7 @@ export const ClaimButton = ({ tokenAddress, walletStatus, captchaCompleted, chai
             <button
                 onClick={
                     txHash ?
-                        () => window.open(`https://testnet-explorer.etherlink.com/tx/${txHash}`, '_blank') :
+                        () => window.open(`https://testnet.explorer.etherlink.com/tx/${txHash}`, '_blank') :
                         () => callFaucet(tokenAddress, amount)}
                 disabled={isLoading || !captchaCompleted || rateLimited}
                 className={`
