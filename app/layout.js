@@ -2,6 +2,7 @@ import ClientLayout from "./ClientLayout";
 import { Analytics } from "@vercel/analytics/react";
 import FathomComponent from "./components/fathom";
 import { Navbar } from "@/app/components/Navbar/index";
+import { GoogleAnalytics } from '@next/third-parties/google'
 
 export const metadata = {
   title: "Get XTZ on Etherlink faucet | Etherlink",
@@ -25,6 +26,7 @@ export default function RootLayout({ children }) {
           {children}
         </ClientLayout>
       </body>
+      <GoogleAnalytics gaId="G-7GJCKRZ8V9" />
     </html>
   );
 }
