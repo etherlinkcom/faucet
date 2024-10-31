@@ -16,6 +16,7 @@
   "dependencies": {
     "@headlessui/react": "^1.7.14",
     "@heroicons/react": "^2.0.17",
+    "@next/third-parties": "^15.0.2",
     "@tailwindcss/aspect-ratio": "^0.4.2",
     "@thirdweb-dev/react": "4.3.1",
     "@thirdweb-dev/sdk": "4.0.26",
