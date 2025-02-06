@@ -28,10 +28,16 @@ export async function POST(request) {
             // If not XTZ
             else {
                 // Create ERC20 contract
-                const abi = ["function transfer(address to, uint256 value) returns (bool)"];
+                const abi = [
+                    "function transfer(address to, uint256 value) returns (bool)",
+                    "function decimals() pure returns (uint256)"
+                ];
                 const erc20Contract = new ethers.Contract(tokenAddress, abi, wallet);
+                const decimals = await erc20Contract.decimals()
+
                 // Send
-                const txResponse = await erc20Contract.transfer(walletAddress, ethers.utils.parseUnits(amount));
+                const amountToSend = ethers.utils.parseUnits(amount, decimals);
+                const txResponse = await erc20Contract.transfer(walletAddress, amountToSend);
                 const receipt = await txResponse.wait();
                 return NextResponse.json(
                     { body: { receipt } },
