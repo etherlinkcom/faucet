@@ -18,11 +18,11 @@ export const ClaimButton = ({ tokenAddress, walletStatus, captchaCompleted, chai
         const lastCall = localStorage.getItem(`faucetCallTimestamp_${tokenAddress}`);
         const now = Date.now();
 
-        // if (lastCall && (now - lastCall) < RATE_LIMIT_INTERVAL) {
-        //     setRateLimited(true)
-        //     toast.error('Must wait 1 day before claiming testnet tokens.');
-        //     return;
-        // }
+        if (lastCall && (now - lastCall) < RATE_LIMIT_INTERVAL) {
+            setRateLimited(true)
+            toast.error('Must wait 1 day before claiming testnet tokens.');
+            return;
+        }
 
         setIsLoading(true);
         const body = JSON.stringify({ walletAddress: address, tokenAddress: tokenAddress, amount: amount });
