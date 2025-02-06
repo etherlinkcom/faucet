@@ -18,11 +18,11 @@ export const ClaimButton = ({ tokenAddress, walletStatus, captchaCompleted, chai
         const lastCall = localStorage.getItem(`faucetCallTimestamp_${tokenAddress}`);
         const now = Date.now();
 
-        if (lastCall && (now - lastCall) < RATE_LIMIT_INTERVAL) {
-            setRateLimited(true)
-            toast.error('Must wait 1 day before claiming testnet tokens.');
-            return;
-        }
+        // if (lastCall && (now - lastCall) < RATE_LIMIT_INTERVAL) {
+        //     setRateLimited(true)
+        //     toast.error('Must wait 1 day before claiming testnet tokens.');
+        //     return;
+        // }
 
         setIsLoading(true);
         const body = JSON.stringify({ walletAddress: address, tokenAddress: tokenAddress, amount: amount });
@@ -57,24 +57,24 @@ export const ClaimButton = ({ tokenAddress, walletStatus, captchaCompleted, chai
                 className={`
                     flex flex-row items-center justify-center
                     text-sm font-medium text-center text-black
-                    border-solid border-2 border-black rounded-md px-2
-                    py-1  hover:border-black
+                    border-solid border-2 border-black rounded-md
+                    w-20 h-10 overflow-hidden
                     ${isLoading || !captchaCompleted ? 'opacity-50 cursor-not-allowed' : ''}
-                    ${isLoading || txHash ? "px-4" : "px-2"}
                     ${rateLimited ? "opacity-50 cursor-not-allowed bg-red-500" : "bg-zinc-200 hover:bg-darkGreen hover:text-white"}
                 `}
             >
-                {isLoading ? <>
-                    <Image
-                        src="/img/home/logo.png"
-                        alt="Loading..."
-                        width={32}
-                        height={32}
-                        className={`w-8 mr-2 ${isLoading ? 'spin-logo' : ''}`}
-                    />
-                    Loading...
-                </> : txHash ?
-                    <>
+                {isLoading ? (
+                    <div className="flex items-center justify-center w-full h-full">
+                        <Image
+                            src="/img/home/logo.png"
+                            alt="Loading..."
+                            width={32}
+                            height={32}
+                            className={`w-8 mr-2 ${isLoading ? 'spin-logo' : ''}`}
+                        />
+                    </div>
+                ) : txHash ? (
+                    <div className="flex items-center justify-center w-full h-full">
                         <Image
                             src="/img/home/logo.png"
                             alt="logo"
@@ -82,9 +82,11 @@ export const ClaimButton = ({ tokenAddress, walletStatus, captchaCompleted, chai
                             height={32}
                             className="w-8 mr-2"
                         />
-                        {`${txHash.slice(0, 6)}`}
-                    </> :
-                    `Send`}
+                        <span className="truncate">{`${txHash.slice(0, 6)}`}</span>
+                    </div>
+                ) : (
+                    "Send"
+                )}
                 <Toaster />
             </button> : ""
     )
