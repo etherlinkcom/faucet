@@ -7,7 +7,7 @@ export const EtherlinkLogo = () => {
     <Link className="hover:cursor-pointer" href="/">
       <div className="flex items-center gap-1">
         <Image
-          src="/img/home/etherlink-logo-beta.svg"
+          src="/etherlink-logo.svg"
           alt="Etherlink Beta Logo"
           width={160}
           height={160}
