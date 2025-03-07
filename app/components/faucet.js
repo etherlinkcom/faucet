@@ -28,12 +28,12 @@ const Faucet = () => {
 
   const tokens = [
     { name: 'Tezos', symbol: 'XTZ', amount: '0.15', address: '0x', decimals: 18, logo: '/img/home/logo.png' },
-    { name: 'Wrapped XTZ', symbol: 'WXTZ', amount: '0.15', address: '0xB1Ea698633d57705e93b0E40c1077d46CD6A51d8', decimals: 18, logo: '/img/home/logo.png' },
-    { name: 'Etherlink USD', symbol: 'eUSD', amount: '50', address: '0x1A71f491fb0Ef77F13F8f6d2a927dd4C969ECe4f', decimals: 18, logo: '/img/tokens/EUSD.png' },
+    // { name: 'Wrapped XTZ', symbol: 'WXTZ', amount: '0.15', address: '0xB1Ea698633d57705e93b0E40c1077d46CD6A51d8', decimals: 18, logo: '/img/home/logo.png' },
+    // { name: 'Etherlink USD', symbol: 'eUSD', amount: '50', address: '0x1A71f491fb0Ef77F13F8f6d2a927dd4C969ECe4f', decimals: 18, logo: '/img/tokens/EUSD.png' },
     { name: 'Tether USD', symbol: 'USDT', amount: '50', address: '0xf7f007dc8Cb507e25e8b7dbDa600c07FdCF9A75B', decimals: 6, logo: '/img/tokens/USDT.png' },
     { name: 'USD Coin', symbol: 'USDC', amount: '50', address: '0x4C2AA252BEe766D3399850569713b55178934849', decimals: 6, logo: '/img/tokens/USDC.png' },
     { name: 'Wrapped Eth', symbol: 'WETH', amount: '0.1', address: '0x86932ff467A7e055d679F7578A0A4F96Be287861', decimals: 18, logo: '/img/tokens/WETH.png' },
-    { name: 'tzBTC', symbol: 'BTC', amount: '0.01', address: '0x6bDE94725379334b469449f4CF49bCfc85ebFb27', decimals: 18, logo: '/img/tokens/TZBTC.png' },
+    // { name: 'tzBTC', symbol: 'BTC', amount: '0.01', address: '0x6bDE94725379334b469449f4CF49bCfc85ebFb27', decimals: 18, logo: '/img/tokens/TZBTC.png' },
   ];
 
 
