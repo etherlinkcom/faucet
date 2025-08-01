@@ -16,7 +16,7 @@ export const NAVBAR_ITEMS = [
   {
     dropdown: false,
     title: "Ecosystem",
-    link: "/ecosystem",
+    link: "https://www.etherlink.com/ecosystem",
   },
   {
     dropdown: false,
