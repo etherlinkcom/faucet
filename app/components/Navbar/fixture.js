@@ -5,18 +5,18 @@ export const NAVBAR_ITEMS = [
     items: [
       {
         name: "EVM bridge",
-        link: "https://etherlinkbridge.com",
+        link: "https://bridge.etherlink.com/evm",
       },
       {
         name: "Tezos bridge",
-        link: "https://bridge.etherlink.com",
+        link: "https://bridge.etherlink.com/tezos",
       },
     ],
   },
   {
     dropdown: false,
     title: "Ecosystem",
-    link: "/ecosystem",
+    link: "https://etherlink.com/ecosystem",
   },
   {
     dropdown: false,
