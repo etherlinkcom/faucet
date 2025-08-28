@@ -45,5 +45,8 @@
     "lorem-ipsum": "^2.0.8",
     "postcss": "^8.4.23",
     "tailwindcss": "^3.3.1"
+  },
+  "engines": {
+    "node": ">=20"
   }
 }
