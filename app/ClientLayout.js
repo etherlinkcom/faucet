@@ -7,7 +7,7 @@ import { ThirdwebProvider } from "thirdweb/react";
 
 export default function ClientLayout({ children }) {
   return (
-    <ThemeProvider attribute="class" defaultTheme="dark">
+    <ThemeProvider attribute="class" defaultTheme="dark" enableSystem={false}>
       <FaucetProvider>
         <ThirdwebProvider>
           {children}
