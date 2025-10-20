@@ -19,17 +19,17 @@ const addTokenToWallet = async (token) => {
 
 export const AddTokenToWalletButton = ({ token }) => {
     return (
-        <button
-            onClick={() => addTokenToWallet(token)}
-            className={`
-          flex flex-row items-center justify-center
-          text-sm font-medium text-center text-black
-          bg-zinc-200 border-solid border-2 border-black rounded-md
-          px-2 py-1 hover:bg-darkGreen hover:border-black
-          hover:text-white
-        `}
-        >
-            Add to Wallet
-        </button>
+           token.address !== '' && <button
+                onClick={() => addTokenToWallet(token)}
+                className={`
+            flex flex-row items-center justify-center
+            text-sm font-medium text-center text-black
+            bg-zinc-200 border-solid border-2 border-black rounded-md
+            px-2 py-1 hover:bg-darkGreen hover:border-black
+            hover:text-white
+            `}
+            >
+                Add to Wallet
+            </button>
     );
 };

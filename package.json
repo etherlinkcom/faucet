@@ -38,6 +38,7 @@
     "react-hot-toast": "^2.4.1",
     "tailwind-merge": "^2.2.1",
     "tailwindcss-animate": "^1.0.7",
+    "thirdweb": "^5.108.1",
     "web3": "^4.4.0"
   },
   "devDependencies": {

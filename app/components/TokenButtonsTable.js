@@ -1,12 +1,12 @@
 import Image from "next/image";
 import { ClaimButton } from "./claimButton";
 import { AddTokenToWalletButton } from "./addTokenToWallet"
-import { useAddress, useChainId } from "@thirdweb-dev/react";
+import { useActiveWalletChain } from "thirdweb/react";
+import { tokens } from "../config/tokens";
 
-export const TokenButtonsTable = ({ tokens, walletStatus, captchaCompleted, wallet }) => {
+export const TokenButtonsTable = ({ captchaCompleted, address }) => {
 
-    const address = useAddress();
-    const chainId = useChainId();
+    const chainId = useActiveWalletChain()?.id;
 
     return (
       <div className="overflow-x-auto">
@@ -43,14 +43,12 @@ export const TokenButtonsTable = ({ tokens, walletStatus, captchaCompleted, wall
               >
                 Action
               </th>
-              {wallet.walletId === 'metamask' &&
                 <th
                   scope="col"
                   className="px-6 text-center text-xs font-medium text-white uppercase tracking-wider"
                 >
                   Add To Wallet
                 </th>
-              }
             </tr>
           </thead>
           <tbody className="bg-black-800 divide-y divide-zinc-600">
@@ -70,17 +68,15 @@ export const TokenButtonsTable = ({ tokens, walletStatus, captchaCompleted, wall
                 <td className="px-6 whitespace-nowrap text-sm text-white flex justify-center items-center mt-1">
                   <ClaimButton
                     tokenAddress={token.address}
-                    walletStatus={walletStatus}
                     captchaCompleted={captchaCompleted}
                     chainId={chainId}
                     address={address}
                     amount={token.amount}
                   />
                 </td>
-                {wallet.walletId === 'metamask' && token.name !== 'Tezos' &&
                 <td className="px-6 whitespace-nowrap text-sm text-white">
                   <AddTokenToWalletButton token={token} />
-                </td>}
+                </td>
               </tr>
             ))}
           </tbody>

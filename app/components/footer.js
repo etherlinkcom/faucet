@@ -25,7 +25,7 @@ const Footer = () => {
             {NAVS.map((nav, index) => {
               if (index === NAVS.length - 1) {
                 return (
-                  <Link href={nav.link} target="_blank">
+                  <Link href={nav.link} target="_blank" key={index}>
                     <p className="text-white hover:text-newGreen transition-colors duration-300">
                       {nav.name}
                     </p>

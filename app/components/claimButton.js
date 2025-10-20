@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import Image from "next/image";
 import toast, { Toaster } from 'react-hot-toast';
 
-export const ClaimButton = ({ tokenAddress, walletStatus, captchaCompleted, chainId, address, amount }) => {
+export const ClaimButton = ({ tokenAddress, captchaCompleted, chainId, address, amount }) => {
     const [isLoading, setIsLoading] = useState(false);
     const [txHash, setTxHash] = useState("");
     const [rateLimited, setRateLimited] = useState(false)
@@ -47,7 +47,7 @@ export const ClaimButton = ({ tokenAddress, walletStatus, captchaCompleted, chai
     }
 
     return (
-        walletStatus === "connected" && chainId === 128123 ?
+        address && chainId === 128123 ?
             <button
                 onClick={
                     txHash ?
