@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import Image from "next/image";
 import toast, { Toaster } from 'react-hot-toast';
+import { blockExplorer, blockExplorers, id } from "../config/thirdwebConfig";
 
 export const ClaimButton = ({ tokenAddress, captchaCompleted, chainId, address, amount }) => {
     const [isLoading, setIsLoading] = useState(false);
@@ -47,11 +48,11 @@ export const ClaimButton = ({ tokenAddress, captchaCompleted, chainId, address, 
     }
 
     return (
-        address && chainId === 128123 ?
+        address && chainId === id ?
             <button
                 onClick={
                     txHash ?
-                        () => window.open(`https://testnet.explorer.etherlink.com/tx/${txHash}`, '_blank') :
+                        () => window.open(`${blockExplorer}/tx/${txHash}`, '_blank') :
                         () => callFaucet(tokenAddress, amount)}
                 disabled={isLoading || !captchaCompleted || rateLimited}
                 className={`

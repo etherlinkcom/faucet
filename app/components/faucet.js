@@ -4,10 +4,19 @@ import { ConnectButton } from "thirdweb/react";
 import { TokenButtonsTable } from "./TokenButtonsTable";
 import { useActiveAccount } from "thirdweb/react";
 import { chain, client } from "../config/thirdwebConfig";
+import { createWallet } from "thirdweb/wallets";
 
 const Faucet = () => {
   const [captchaCompleted, setCaptchaCompleted] = useState(false);
   const account = useActiveAccount();
+
+  const wallets = [
+    createWallet("io.metamask"),
+    createWallet("com.coinbase.wallet"),
+    createWallet("me.rainbow"),
+    createWallet("io.rabby"),
+    createWallet("io.zerion.wallet"),
+  ];
 
   return (
     <div className="flex items-center justify-center w-full lg:w-1/2 min-w-1/2 rounded-lg mt-10 mb-10">
@@ -18,7 +27,11 @@ const Faucet = () => {
           </h1>
         </div>
         <div className="flex flex-col items-center">
-          <ConnectButton client={client} chain={chain} />
+          <ConnectButton
+            client={client}
+            chain={chain}
+            wallets={wallets}
+            />
           {account?.address && (
             <ReCAPTCHA
               sitekey="6Lcbu-AoAAAAAOPS85LI3sqIvAwErDKdtZJ8d1Xh"

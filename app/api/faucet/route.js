@@ -6,7 +6,6 @@ export async function POST(request) {
     try {
         const response = await enqueue(async () => {
         const { walletAddress, tokenAddress, amount } = await request.json();
-        console.log({walletAddress, tokenAddress, amount});
         const privateKey = process.env.PRIVATE_KEY;
         const rpcUrl = process.env.NEXT_PUBLIC_NETWORK === "shadownet" ?
             "https://node.shadownet.etherlink.com" :
