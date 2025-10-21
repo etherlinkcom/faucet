@@ -59,7 +59,7 @@ export const ClaimButton = ({ tokenAddress, captchaCompleted, chainId, address, 
                     flex flex-row items-center justify-center
                     text-sm font-medium text-center text-black
                     border-solid border-2 border-black rounded-md
-                    w-full md:w-20 h-10 overflow-hidden
+                    w-full md:w-20 h-8 overflow-hidden
                     ${isLoading || !captchaCompleted ? 'opacity-50 cursor-not-allowed' : ''}
                     ${rateLimited ? "opacity-50 cursor-not-allowed bg-red-500" : "bg-zinc-200 hover:bg-darkGreen hover:text-white"}
                 `}
