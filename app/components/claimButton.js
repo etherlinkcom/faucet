@@ -26,7 +26,15 @@ export const ClaimButton = ({ tokenAddress, captchaCompleted, chainId, address, 
         }
 
         setIsLoading(true);
-        const body = JSON.stringify({ walletAddress: address, tokenAddress: tokenAddress, amount: amount });
+
+
+        const body = JSON.stringify({
+            walletAddress: address,
+            tokenAddress: tokenAddress,
+            amount: amount ,
+            recaptchaToken: captchaCompleted
+
+        });
         const response = await fetch('/api/faucet', {
             method: 'POST',
             headers: {

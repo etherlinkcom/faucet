@@ -7,7 +7,7 @@ import { chain, client } from "../config/thirdwebConfig";
 import { createWallet } from "thirdweb/wallets";
 
 const Faucet = () => {
-  const [captchaCompleted, setCaptchaCompleted] = useState(false);
+  const [captchaCompleted, setCaptchaCompleted] = useState();
   const account = useActiveAccount();
 
   const wallets = [
@@ -34,8 +34,8 @@ const Faucet = () => {
             />
           {account?.address && (
             <ReCAPTCHA
-              sitekey="6Lcbu-AoAAAAAOPS85LI3sqIvAwErDKdtZJ8d1Xh"
-              onChange={() => setCaptchaCompleted(true)}
+              sitekey={process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY}
+              onChange={(token) => setCaptchaCompleted(token)}
               onExpired={() => setCaptchaCompleted(false)}
               className="mt-10 mb-10"
               theme="light"
