@@ -26,7 +26,7 @@ export const AddTokenToWalletButton = ({ token }) => {
             text-sm font-medium text-center text-black
             bg-zinc-200 border-solid border-2 border-black rounded-md
             px-2 py-1 hover:bg-darkGreen hover:border-black
-            hover:text-white
+            hover:text-white w-full md:w-20 h-10 overflow-hidden
             `}
             >
                 Add to Wallet
