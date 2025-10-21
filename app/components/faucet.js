@@ -1,49 +1,22 @@
 import { useState } from "react";
 import ReCAPTCHA from "react-google-recaptcha";
-import {
-  ConnectWallet,
-  lightTheme,
-  useConnectionStatus,
-  useWallet
-} from "@thirdweb-dev/react";
-
+import { ConnectButton } from "thirdweb/react";
 import { TokenButtonsTable } from "./TokenButtonsTable";
-
-const customTheme = lightTheme({
-  colors: {
-    primaryText: 'black',
-    primaryButtonBg: '#38ff9c',
-    primaryButtonText: 'black',
-    secondaryButtonBg: '#59ad8c',
-    connectedButtonBgHover: '#59ad8c',
-    borderColor: '#59ad8c'
-  },
-});
+import { useActiveAccount } from "thirdweb/react";
+import { chain, client } from "../config/thirdwebConfig";
+import { createWallet } from "thirdweb/wallets";
 
 const Faucet = () => {
-  const [captchaCompleted, setCaptchaCompleted] = useState(false);
+  const [captchaCompleted, setCaptchaCompleted] = useState();
+  const account = useActiveAccount();
 
-  const walletStatus = useConnectionStatus();
-  const wallet = useWallet();
-
-  const tokens = [
-    { name: 'Tezos', symbol: 'XTZ', amount: '0.15', address: '0x', decimals: 18, logo: '/img/tokens/XTZ.svg' },
-    { name: 'Tether USD', symbol: 'USDT', amount: '50', address: '0xf7f007dc8Cb507e25e8b7dbDa600c07FdCF9A75B', decimals: 6, logo: '/img/tokens/USDT.png' },
-    { name: 'USD Coin', symbol: 'USDC', amount: '50', address: '0x4C2AA252BEe766D3399850569713b55178934849', decimals: 6, logo: '/img/tokens/USDC.png' },
-    { name: 'Wrapped Eth', symbol: 'WETH', amount: '0.1', address: '0x86932ff467A7e055d679F7578A0A4F96Be287861', decimals: 18, logo: '/img/tokens/WETH.png' },
+  const wallets = [
+    createWallet("io.metamask"),
+    createWallet("com.coinbase.wallet"),
+    createWallet("me.rainbow"),
+    createWallet("io.rabby"),
+    createWallet("io.zerion.wallet"),
   ];
-
-
-  const ConnectWalletButton = () => {
-    return (
-      <ConnectWallet
-        switchToActiveChain={true}
-        theme={customTheme}
-        modalSize={"wide"}
-      />
-    )
-  }
-
 
   return (
     <div className="flex items-center justify-center w-full lg:w-1/2 min-w-1/2 rounded-lg mt-10 mb-10">
@@ -54,23 +27,25 @@ const Faucet = () => {
           </h1>
         </div>
         <div className="flex flex-col items-center">
-          <ConnectWalletButton />
-          {walletStatus === "connected"  && (
+          <ConnectButton
+            client={client}
+            chain={chain}
+            wallets={wallets}
+            />
+          {account?.address && (
             <ReCAPTCHA
-              sitekey="6Lcbu-AoAAAAAOPS85LI3sqIvAwErDKdtZJ8d1Xh"
-              onChange={() => setCaptchaCompleted(true)}
+              sitekey={process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY}
+              onChange={(token) => setCaptchaCompleted(token)}
               onExpired={() => setCaptchaCompleted(false)}
               className="mt-10 mb-10"
               theme="light"
             />
           )}
         </div>
-        {walletStatus === "connected"  && (
+        {account?.address && (
           <TokenButtonsTable
-            tokens={tokens}
-            walletStatus={walletStatus}
             captchaCompleted={captchaCompleted}
-            wallet={wallet}
+            address={account?.address}
           />
         )}
       </div>

@@ -21,26 +21,15 @@ const Footer = () => {
       <div className="flex flex-col md:flex-row justify-between md:items-end border-b border-[#515151] pb-10 md:pb-6 z-10">
         <div className="flex flex-col justify-start items-center md:items-start">
           <EtherlinkLogo />
-          <div className="flex flex-col md:flex-row mt-6 text-center gap-6 md:gap-0 hover:cursor-pointer">
+          <div className="flex flex-col md:flex-row mt-6 text-center hover:cursor-pointer md:divide-x md:divide-[#515151]">
+
             {NAVS.map((nav, index) => {
-              if (index === NAVS.length - 1) {
-                return (
-                  <Link href={nav.link} target="_blank">
-                    <p className="text-white hover:text-newGreen transition-colors duration-300">
-                      {nav.name}
-                    </p>
-                  </Link>
-                );
-              }
               return (
-                <>
-                  <Link href={nav.link} target="_blank">
-                    <p className="text-white hover:text-newGreen transition-colors duration-300">
+                  <Link href={nav.link} target="_blank" key={index}>
+                    <p className="text-white hover:text-newGreen transition-colors duration-300 md:px-4">
                       {nav.name}
                     </p>
                   </Link>
-                  <p className="px-4 text-[#515151] hidden md:block">|</p>
-                </>
               );
             })}
           </div>

@@ -1,8 +1,9 @@
 import { useEffect, useState } from "react";
 import Image from "next/image";
 import toast, { Toaster } from 'react-hot-toast';
+import { blockExplorer, id } from "../config/thirdwebConfig";
 
-export const ClaimButton = ({ tokenAddress, walletStatus, captchaCompleted, chainId, address, amount }) => {
+export const ClaimButton = ({ tokenAddress, captchaCompleted, chainId, address, amount }) => {
     const [isLoading, setIsLoading] = useState(false);
     const [txHash, setTxHash] = useState("");
     const [rateLimited, setRateLimited] = useState(false)
@@ -25,7 +26,15 @@ export const ClaimButton = ({ tokenAddress, walletStatus, captchaCompleted, chai
         }
 
         setIsLoading(true);
-        const body = JSON.stringify({ walletAddress: address, tokenAddress: tokenAddress, amount: amount });
+
+
+        const body = JSON.stringify({
+            walletAddress: address,
+            tokenAddress: tokenAddress,
+            amount: amount ,
+            recaptchaToken: captchaCompleted
+
+        });
         const response = await fetch('/api/faucet', {
             method: 'POST',
             headers: {
@@ -47,18 +56,18 @@ export const ClaimButton = ({ tokenAddress, walletStatus, captchaCompleted, chai
     }
 
     return (
-        walletStatus === "connected" && chainId === 128123 ?
+        address && chainId === id ?
             <button
                 onClick={
                     txHash ?
-                        () => window.open(`https://testnet.explorer.etherlink.com/tx/${txHash}`, '_blank') :
+                        () => window.open(`${blockExplorer}/tx/${txHash}`, '_blank') :
                         () => callFaucet(tokenAddress, amount)}
                 disabled={isLoading || !captchaCompleted || rateLimited}
                 className={`
                     flex flex-row items-center justify-center
                     text-sm font-medium text-center text-black
                     border-solid border-2 border-black rounded-md
-                    w-20 h-10 overflow-hidden
+                    w-full md:w-20 h-8 overflow-hidden
                     ${isLoading || !captchaCompleted ? 'opacity-50 cursor-not-allowed' : ''}
                     ${rateLimited ? "opacity-50 cursor-not-allowed bg-red-500" : "bg-zinc-200 hover:bg-darkGreen hover:text-white"}
                 `}
