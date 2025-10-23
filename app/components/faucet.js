@@ -23,7 +23,10 @@ const Faucet = () => {
       <div className="min-w-2xl text-center lg:text-center">
         <div className="flex flex-col space-y-2 mb-10">
           <h1 className="text-white font-bold text-5xl">
-            Get testnet XTZ on <span className="text-newGreen">Etherlink</span>
+            Get <span className="text-newGreen">Etherlink</span>{" "}
+            {process.env.NEXT_PUBLIC_NETWORK === "shadownet"
+              ? "Shadownet Testnet Tokens"
+              : "Testnet Tokens"}
           </h1>
         </div>
         <div className="flex flex-col items-center">
