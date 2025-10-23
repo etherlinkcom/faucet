@@ -25,11 +25,6 @@ export const NAVBAR_ITEMS = [
   },
   {
     dropdown: false,
-    title: "Faucet",
-    link: "https://faucet.etherlink.com/",
-  },
-  {
-    dropdown: false,
     title: "Status",
     link: "https://status.etherlink.com/",
   },
@@ -42,7 +37,11 @@ export const NAVBAR_ITEMS = [
         link: "https://testnet.explorer.etherlink.com/",
       },
       {
-        name: "Mainnet beta explorer",
+        name: "Shadownet explorer",
+        link: "https://shadownet.explorer.etherlink.com/",
+      },
+      {
+        name: "Mainnet explorer",
         link: "https://explorer.etherlink.com/",
       },
       {
