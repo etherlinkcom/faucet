@@ -25,6 +25,24 @@ async function verifyRecaptcha(recaptchaToken) {
     return true;
 }
 
+function getProvider() {
+    let chainId;
+    let rpcUrl;
+    if (process.env.NEXT_PUBLIC_NETWORK === "shadownet") {
+        rpcUrl = "https://node.shadownet.etherlink.com";
+        chainId = 127823;
+    } else {
+        rpcUrl = "https://node.ghostnet.etherlink.com";
+        chainId = 128123;
+    }
+
+    const provider = new ethers.providers.StaticJsonRpcProvider(
+        { url: rpcUrl },
+        { chainId, name: "etherlink-testnet" }
+    );
+    return provider;
+}
+
 export async function POST(request) {
     try {
         const response = await enqueue(async () => {
@@ -39,10 +57,11 @@ export async function POST(request) {
         }
 
         const privateKey = process.env.PRIVATE_KEY;
-        const rpcUrl = process.env.NEXT_PUBLIC_NETWORK === "shadownet" ?
-            "https://node.shadownet.etherlink.com" :
-            "https://node.ghostnet.etherlink.com"
-        const provider = new ethers.providers.JsonRpcProvider(rpcUrl);
+        // const rpcUrl = process.env.NEXT_PUBLIC_NETWORK === "shadownet" ?
+        //     "https://node.shadownet.etherlink.com" :
+        //     "https://node.ghostnet.etherlink.com"
+        // const provider = new ethers.providers.JsonRpcProvider(rpcUrl);
+        const provider = getProvider();
         const wallet = new ethers.Wallet(privateKey, provider);
 
         if (tokenAddress === "") {
