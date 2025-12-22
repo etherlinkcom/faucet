@@ -1,11 +1,24 @@
+export const fetchCache = 'force-no-store';
+export const dynamic = 'force-dynamic';
+
 import { NextResponse } from 'next/server';
 import { ethers } from 'ethers';
 import { enqueue } from './queue';
 
 const usedRecaptchaTokens = new Set();
 
-async function verifyRecaptcha(recaptchaToken) {
+const NETWORK_CONFIG = {
+  shadownet: {
+    rpcUrl: "https://node.shadownet.etherlink.com",
+    chainId: 127823,
+  },
+  ghostnet: {
+    rpcUrl: "https://node.ghostnet.etherlink.com",
+    chainId: 128123,
+  },
+};
 
+async function verifyRecaptcha(recaptchaToken) {
     if (usedRecaptchaTokens.has(recaptchaToken)) return true;
 
     const secret = process.env.RECAPTCHA_SECRET_KEY;
@@ -19,7 +32,10 @@ async function verifyRecaptcha(recaptchaToken) {
     );
 
     const verifyData = await verifyRes.json();
-    if (!verifyData.success) return false;
+    if (!verifyData.success) {
+        console.log('[Faucet] reCAPTCHA verification failed');
+        return false;
+    }
 
     usedRecaptchaTokens.add(recaptchaToken);
     return true;
@@ -29,8 +45,10 @@ export async function POST(request) {
     try {
         const response = await enqueue(async () => {
         const { walletAddress, tokenAddress, amount, recaptchaToken } = await request.json();
+        console.log(`[Faucet] Request: ${tokenAddress ? 'ERC20' : 'Native'} ${amount} to ${walletAddress}`);
 
-        const recaptchaSuccess = await verifyRecaptcha(recaptchaToken);
+        const isStaging = process.env.NEXT_PUBLIC_ENVIRONMENT === 'staging';
+        const recaptchaSuccess = isStaging || await verifyRecaptcha(recaptchaToken);
         if (!recaptchaSuccess) {
             return NextResponse.json(
                 { error: "reCAPTCHA failed" },
@@ -38,40 +56,54 @@ export async function POST(request) {
             );
         }
 
-        const privateKey = process.env.PRIVATE_KEY;
-        const rpcUrl = process.env.NEXT_PUBLIC_NETWORK === "shadownet" ?
-            "https://node.shadownet.etherlink.com" :
-            "https://node.ghostnet.etherlink.com"
-        const provider = new ethers.providers.JsonRpcProvider(rpcUrl);
-        const wallet = new ethers.Wallet(privateKey, provider);
+        const networkType = process.env.NEXT_PUBLIC_NETWORK === "shadownet"
+            ? "shadownet"
+            : "ghostnet";
+        const config = NETWORK_CONFIG[networkType];
+        console.log(`[Faucet] Network: ${networkType}`);
+
+        const provider = new ethers.providers.JsonRpcProvider(
+            {
+                url: config.rpcUrl,
+                skipFetchSetup: true,
+            },
+            config.chainId
+        );
+        const wallet = new ethers.Wallet(process.env.PRIVATE_KEY, provider);
 
         if (tokenAddress === "") {
-            const gasPrice = await wallet.provider.getGasPrice()
+            console.log('[Faucet] Sending native token');
+            const gasPrice = await wallet.provider.getGasPrice();
             const transaction = {
                 to: walletAddress,
                 value: ethers.utils.parseEther(amount),
                 gasPrice: gasPrice
             };
             const txResponse = await wallet.sendTransaction(transaction);
+            console.log(`[Faucet] Tx sent: ${txResponse.hash}`);
             const receipt = await txResponse.wait();
+            console.log(`[Faucet] Tx confirmed: ${receipt.transactionHash}`);
             return NextResponse.json(
                 { body: { receipt } },
                 { status: 200 },
             );
         } else {
+            console.log(`[Faucet] Sending ERC20: ${tokenAddress}`);
             const abi = [
                 "function transfer(address to, uint256 value) returns (bool)",
                 "function decimals() pure returns (uint256)"
             ];
             const erc20Contract = new ethers.Contract(tokenAddress, abi, wallet);
-            const decimals = await erc20Contract.decimals()
+            const decimals = await erc20Contract.decimals();
 
             const amountToSend = ethers.utils.parseUnits(amount, decimals);
             const txResponse = await erc20Contract.transfer(
                 walletAddress,
                 amountToSend,
             );
+            console.log(`[Faucet] Tx sent: ${txResponse.hash}`);
             const receipt = await txResponse.wait();
+            console.log(`[Faucet] Tx confirmed: ${receipt.transactionHash}`);
             return NextResponse.json(
                 { body: { receipt } },
                 { status: 200 },
@@ -81,7 +113,7 @@ export async function POST(request) {
 
         return response;
     } catch (error) {
-        console.error(error);
+        console.error('[Faucet] Error:', error.message || error);
         return NextResponse.json(
             { body: "error" },
             { status: 500 },
