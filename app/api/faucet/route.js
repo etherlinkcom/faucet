@@ -48,7 +48,8 @@ export async function POST(request) {
         const response = await enqueue(async () => {
         const { walletAddress, tokenAddress, amount, recaptchaToken } = await request.json();
 
-        const recaptchaSuccess = await verifyRecaptcha(recaptchaToken);
+        const isStaging = process.env.NEXT_PUBLIC_ENVIRONMENT === 'staging';
+        const recaptchaSuccess = isStaging || await verifyRecaptcha(recaptchaToken);
         if (!recaptchaSuccess) {
             return NextResponse.json(
                 { error: "reCAPTCHA failed" },

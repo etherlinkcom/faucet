@@ -8,24 +8,26 @@ export const ClaimButton = ({ tokenAddress, captchaCompleted, chainId, address, 
     const [txHash, setTxHash] = useState("");
     const [rateLimited, setRateLimited] = useState(false)
 
+    const isStaging = process.env.NEXT_PUBLIC_ENVIRONMENT === 'staging';
+    const buttonDisabled = (!captchaCompleted && !isStaging) || isLoading;
+
     useEffect(() => {
         if (txHash) {
             setIsLoading(false);
         }
     }, [txHash]);
 
+
     const callFaucet = async (tokenAddress, amount) => {
         const RATE_LIMIT_INTERVAL = 24 * 60 * 60 * 1000; // 1 Day
         const lastCall = localStorage.getItem(`faucetCallTimestamp_${tokenAddress}`);
         const now = Date.now();
 
-            // Temporarily disabled for testing
-            // TODO remove in prod
-        // if (lastCall && (now - lastCall) < RATE_LIMIT_INTERVAL) {
-        //     setRateLimited(true)
-        //     toast.error('Must wait 1 day before claiming testnet tokens.');
-        //     return;
-        // }
+        if (!isStaging && lastCall && (now - lastCall) < RATE_LIMIT_INTERVAL) {
+            setRateLimited(true)
+            toast.error('Must wait 1 day before claiming testnet tokens.');
+            return;
+        }
 
         setIsLoading(true);
 
@@ -35,7 +37,6 @@ export const ClaimButton = ({ tokenAddress, captchaCompleted, chainId, address, 
             tokenAddress: tokenAddress,
             amount: amount ,
             recaptchaToken: captchaCompleted
-
         });
         const response = await fetch('/api/faucet', {
             method: 'POST',
@@ -64,16 +65,13 @@ export const ClaimButton = ({ tokenAddress, captchaCompleted, chainId, address, 
                     txHash ?
                         () => window.open(`${blockExplorer}/tx/${txHash}`, '_blank') :
                         () => callFaucet(tokenAddress, amount)}
-                disabled={isLoading || !captchaCompleted || rateLimited}
+                disabled={buttonDisabled || rateLimited}
                 className={`
                     flex flex-row items-center justify-center
                     text-sm font-medium text-center text-black
                     border-solid border-2 border-black rounded-md
                     w-full md:w-20 h-8 overflow-hidden
-                    ${isLoading
-                        // || !captchaCompleted
-                        ?
-                        'opacity-50 cursor-not-allowed' : ''}
+                    ${buttonDisabled ? 'opacity-50 cursor-not-allowed' : ''}
                     ${rateLimited ? "opacity-50 cursor-not-allowed bg-red-500" : "bg-zinc-200 hover:bg-darkGreen hover:text-white"}
                 `}
             >
