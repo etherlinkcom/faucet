@@ -10,12 +10,10 @@ const usedRecaptchaTokens = new Set();
 const NETWORK_CONFIG = {
   shadownet: {
     rpcUrl: "https://node.shadownet.etherlink.com",
-    name: "etherlink-shadownet",
     chainId: 127823,
   },
   ghostnet: {
     rpcUrl: "https://node.ghostnet.etherlink.com",
-    name: "etherlink-ghostnet",
     chainId: 128123,
   },
 };
@@ -65,8 +63,11 @@ export async function POST(request) {
         console.log(`[Faucet] Network: ${networkType}`);
 
         const provider = new ethers.providers.JsonRpcProvider(
-            config.rpcUrl,
-            { name: config.name, chainId: config.chainId }
+            {
+                url: config.rpcUrl,
+                skipFetchSetup: true,
+            },
+            config.chainId
         );
         const wallet = new ethers.Wallet(process.env.PRIVATE_KEY, provider);
 
