@@ -19,11 +19,13 @@ export const ClaimButton = ({ tokenAddress, captchaCompleted, chainId, address, 
         const lastCall = localStorage.getItem(`faucetCallTimestamp_${tokenAddress}`);
         const now = Date.now();
 
-        if (lastCall && (now - lastCall) < RATE_LIMIT_INTERVAL) {
-            setRateLimited(true)
-            toast.error('Must wait 1 day before claiming testnet tokens.');
-            return;
-        }
+            // Temporarily disabled for testing
+            // TODO remove in prod
+        // if (lastCall && (now - lastCall) < RATE_LIMIT_INTERVAL) {
+        //     setRateLimited(true)
+        //     toast.error('Must wait 1 day before claiming testnet tokens.');
+        //     return;
+        // }
 
         setIsLoading(true);
 
@@ -68,7 +70,10 @@ export const ClaimButton = ({ tokenAddress, captchaCompleted, chainId, address, 
                     text-sm font-medium text-center text-black
                     border-solid border-2 border-black rounded-md
                     w-full md:w-20 h-8 overflow-hidden
-                    ${isLoading || !captchaCompleted ? 'opacity-50 cursor-not-allowed' : ''}
+                    ${isLoading
+                        // || !captchaCompleted
+                        ?
+                        'opacity-50 cursor-not-allowed' : ''}
                     ${rateLimited ? "opacity-50 cursor-not-allowed bg-red-500" : "bg-zinc-200 hover:bg-darkGreen hover:text-white"}
                 `}
             >
