@@ -7,6 +7,19 @@ import { enqueue } from './queue';
 
 const usedRecaptchaTokens = new Set();
 
+const NETWORK_CONFIG = {
+  shadownet: {
+    rpcUrl: "https://node.shadownet.etherlink.com",
+    name: "etherlink-shadownet",
+    chainId: 127823,
+  },
+  ghostnet: {
+    rpcUrl: "https://node.ghostnet.etherlink.com",
+    name: "etherlink-ghostnet",
+    chainId: 128123,
+  },
+};
+
 async function verifyRecaptcha(recaptchaToken) {
 
     if (usedRecaptchaTokens.has(recaptchaToken)) return true;
@@ -43,10 +56,14 @@ export async function POST(request) {
         }
 
         const privateKey = process.env.PRIVATE_KEY;
-        const rpcUrl = process.env.NEXT_PUBLIC_NETWORK === "shadownet" ?
-            "https://node.shadownet.etherlink.com" :
-            "https://node.ghostnet.etherlink.com"
-        const provider = new ethers.providers.JsonRpcProvider(rpcUrl);
+        const networkType = process.env.NEXT_PUBLIC_NETWORK === "shadownet"
+            ? "shadownet"
+            : "ghostnet";
+        const config = NETWORK_CONFIG[networkType];
+        const provider = new ethers.providers.JsonRpcProvider(
+            config.rpcUrl,
+            { name: config.name, chainId: config.chainId }
+        );
         const wallet = new ethers.Wallet(privateKey, provider);
 
         if (tokenAddress === "") {
