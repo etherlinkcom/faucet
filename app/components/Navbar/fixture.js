@@ -33,10 +33,6 @@ export const NAVBAR_ITEMS = [
     title: "Resources",
     items: [
       {
-        name: "Testnet explorer",
-        link: "https://testnet.explorer.etherlink.com/",
-      },
-      {
         name: "Shadownet explorer",
         link: "https://shadownet.explorer.etherlink.com/",
       },
