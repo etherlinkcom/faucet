@@ -23,8 +23,6 @@ export const ClaimButton = ({ tokenAddress, captchaCompleted, chainId, address, 
         const lastCall = localStorage.getItem(`faucetCallTimestamp_${tokenAddress}`);
         const now = Date.now();
 
-        console.log({ isLocal, lastCall, diff: now - lastCall, RATE_LIMIT_INTERVAL })
-        console.log((!isLocal && lastCall && (now - lastCall) < RATE_LIMIT_INTERVAL))
         if (!isLocal && lastCall && (now - lastCall) < RATE_LIMIT_INTERVAL) {
             setRateLimited(true)
             toast.error('Must wait 1 day before claiming testnet tokens.');
