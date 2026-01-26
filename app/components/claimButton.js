@@ -107,14 +107,14 @@ export const ClaimButton = ({ tokenAddress, captchaCompleted, chainId, address, 
                     txHash ?
                         () => window.open(`${blockExplorer}/tx/${txHash}`, '_blank') :
                         () => callFaucet(tokenAddress, amount)}
-                disabled={buttonDisabled || rateLimited}
+                disabled={buttonDisabled || (!txHash && rateLimited)}
                 className={`
                     flex flex-row items-center justify-center
                     text-sm font-medium text-center
                     border-solid border-2 border-black rounded-md
                     w-full md:w-20 h-8 overflow-hidden
                     ${buttonDisabled ? 'opacity-50 cursor-not-allowed' : ''}
-                    ${rateLimited ? "opacity-50 cursor-not-allowed bg-zinc-400 text-white border-zinc-500" : "text-black bg-zinc-200 hover:bg-darkGreen hover:text-white"}
+                    ${rateLimited && !txHash ? "opacity-50 cursor-not-allowed bg-zinc-400 text-white border-zinc-500" : "text-black bg-zinc-200 hover:bg-darkGreen hover:text-white"}
                 `}
             >
                 {isLoading ? (
