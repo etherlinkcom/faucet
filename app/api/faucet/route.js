@@ -61,8 +61,8 @@ export async function POST(request) {
             const amount = tokenConfig.amount.toString();
             console.log(`[Faucet] Request: ${tokenAddress ? 'ERC20 (' + tokenConfig.symbol + ')' : 'Native'} ${amount} to ${walletAddress}`);
 
-            const isStaging = process.env.NEXT_PUBLIC_ENVIRONMENT === 'staging';
-            const recaptchaSuccess = isStaging || await verifyRecaptcha(recaptchaToken);
+            const isLocal = process.env.NEXT_PUBLIC_ENVIRONMENT === 'local';
+            const recaptchaSuccess = isLocal || await verifyRecaptcha(recaptchaToken);
             if (!recaptchaSuccess) {
                 return NextResponse.json(
                     { error: "reCAPTCHA failed" },

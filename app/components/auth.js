@@ -86,7 +86,6 @@ export default function Auth() {
 
         // Get user's Ethereum public address
         const address = (await web3.eth.getAccounts())[0]
-        console.log("address: " + address);
 
         // Get user's balance in ether
         const balance = web3.utils.fromWei(
@@ -122,7 +121,6 @@ export default function Auth() {
         const el = document.querySelector("#console>p")
         if (el) {
             el.innerHTML = JSON.stringify(args || {}, null, 2)
-            console.log(...args)
         }
     }
 
