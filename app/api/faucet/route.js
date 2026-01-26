@@ -103,6 +103,11 @@ export async function POST(request) {
         const response = await enqueue(async () => {
             const { walletAddress, tokenAddress, recaptchaToken } = await request.json();
 
+            const ip = request.headers.get('x-forwarded-for')?.split(',')[0] ||
+                request.headers.get('x-real-ip') ||
+                request.ip ||
+                'unknown';
+
             // Find token in config to get the authorized amount
             const tokenConfig = tokens.find(t => t.address.toLowerCase() === (tokenAddress || "").toLowerCase());
 
@@ -115,7 +120,7 @@ export async function POST(request) {
             }
 
             const amount = tokenConfig.amount.toString();
-            console.log(`[Faucet] Request: ${tokenAddress ? 'ERC20 (' + tokenConfig.symbol + ')' : 'Native'} ${amount} to ${walletAddress}`);
+            console.log(`[Faucet] Request: ${tokenAddress ? 'ERC20 (' + tokenConfig.symbol + ')' : 'Native'} ${amount} to ${walletAddress} from ${ip}`);
 
             const isLocal = process.env.NEXT_PUBLIC_ENVIRONMENT === 'local';
             const recaptchaSuccess = isLocal || await verifyRecaptcha(recaptchaToken);
