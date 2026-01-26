@@ -8,8 +8,8 @@ export const ClaimButton = ({ tokenAddress, captchaCompleted, chainId, address, 
     const [txHash, setTxHash] = useState("");
     const [rateLimited, setRateLimited] = useState(false)
 
-    const isStaging = process.env.NEXT_PUBLIC_ENVIRONMENT === 'staging';
-    const buttonDisabled = (!captchaCompleted && !isStaging) || isLoading;
+    const isLocal = process.env.NEXT_PUBLIC_ENVIRONMENT === 'local';
+    const buttonDisabled = (!captchaCompleted && !isLocal) || isLoading;
 
     useEffect(() => {
         if (txHash) {
@@ -23,9 +23,9 @@ export const ClaimButton = ({ tokenAddress, captchaCompleted, chainId, address, 
         const lastCall = localStorage.getItem(`faucetCallTimestamp_${tokenAddress}`);
         const now = Date.now();
 
-        console.log({ isStaging, lastCall, diff: now - lastCall, RATE_LIMIT_INTERVAL })
-        console.log((!isStaging && lastCall && (now - lastCall) < RATE_LIMIT_INTERVAL))
-        if (!isStaging && lastCall && (now - lastCall) < RATE_LIMIT_INTERVAL) {
+        console.log({ isLocal, lastCall, diff: now - lastCall, RATE_LIMIT_INTERVAL })
+        console.log((!isLocal && lastCall && (now - lastCall) < RATE_LIMIT_INTERVAL))
+        if (!isLocal && lastCall && (now - lastCall) < RATE_LIMIT_INTERVAL) {
             setRateLimited(true)
             toast.error('Must wait 1 day before claiming testnet tokens.');
             return;
