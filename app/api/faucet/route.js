@@ -5,6 +5,7 @@ import { NextResponse } from 'next/server';
 import { ethers } from 'ethers';
 import { enqueue } from './queue';
 import { tokens } from '../../config/tokens';
+import { fetchJson } from '../../utils/fetchJson';
 
 const usedRecaptchaTokens = new Set();
 
@@ -12,12 +13,16 @@ const NETWORK_CONFIG = {
     shadownet: {
         rpcUrl: "https://node.shadownet.etherlink.com",
         chainId: 127823,
+        explorerApi: "https://shadownet.explorer.etherlink.com/api"
     },
     ghostnet: {
         rpcUrl: "https://node.ghostnet.etherlink.com",
         chainId: 128123,
+        explorerApi: "https://testnet.explorer.etherlink.com/api"
     },
 };
+
+
 
 async function verifyRecaptcha(recaptchaToken) {
     if (usedRecaptchaTokens.has(recaptchaToken)) return true;
@@ -39,7 +44,63 @@ async function verifyRecaptcha(recaptchaToken) {
     }
 
     usedRecaptchaTokens.add(recaptchaToken);
+    // Allow token reuse for a short window (e.g. 5 minutes) to enable multi-token claims
+    setTimeout(() => usedRecaptchaTokens.delete(recaptchaToken), 5 * 60 * 1000);
+
     return true;
+}
+
+async function checkCoolOff(walletAddress, tokenAddress, config, faucetAddress) {
+    const isLocal = process.env.NEXT_PUBLIC_ENVIRONMENT === 'local';
+    if (isLocal) return { allowed: true };
+    const COOL_OFF_PERIOD = 24 * 60 * 60 * 1000; // 24 hours
+    const isNative = !tokenAddress;
+
+    // Construct API URL
+    const baseUrl = `${config.explorerApi}/v2/addresses/${walletAddress}`;
+    let url;
+
+    if (isNative) {
+        // V2 API for Native Transfers (uses base URL without /api)
+        url = `${baseUrl}/transactions?filter=to`;
+    } else {
+        // V2 API for ERC20 Transfers
+        url = `${baseUrl}/token-transfers?type=ERC-20`;
+    }
+
+    try {
+        const data = await fetchJson(url);
+        let lastClaim = null;
+
+        if (isNative) {
+            if (data.items && Array.isArray(data.items)) {
+                lastClaim = data.items.find(tx =>
+                    tx.from && tx.from.hash.toLowerCase() === faucetAddress.toLowerCase()
+                );
+            }
+        } else {
+            if (data.items && Array.isArray(data.items)) {
+                // For ERC20s (V2 token-transfers), check 'from' and 'token'
+                lastClaim = data.items.find(tx =>
+                    tx.from && tx.from.hash.toLowerCase() === faucetAddress.toLowerCase() &&
+                    tx.token && tx.token.address.toLowerCase() === tokenAddress.toLowerCase()
+                );
+            }
+        }
+
+        if (lastClaim) {
+            const lastClaimTime = Date.parse(lastClaim.timestamp);
+            const now = Date.now();
+            if (now - lastClaimTime < COOL_OFF_PERIOD) {
+                const remaining = Math.ceil((COOL_OFF_PERIOD - (now - lastClaimTime)) / (60 * 1000 * 60));
+                return { allowed: false, remainingHours: remaining };
+            }
+        }
+    } catch (error) {
+        console.error('[Faucet] Error checking history:', error);
+    }
+
+    return { allowed: true };
 }
 
 export async function POST(request) {
@@ -65,7 +126,7 @@ export async function POST(request) {
             const recaptchaSuccess = isLocal || await verifyRecaptcha(recaptchaToken);
             if (!recaptchaSuccess) {
                 return NextResponse.json(
-                    { error: "reCAPTCHA failed" },
+                    { error: "reCAPTCHA failed or token reused" },
                     { status: 400 }
                 );
             }
@@ -84,6 +145,23 @@ export async function POST(request) {
                 config.chainId
             );
             const wallet = new ethers.Wallet(process.env.PRIVATE_KEY, provider);
+
+            // Check Cool-off
+            const { allowed, remainingHours } = await checkCoolOff(walletAddress, tokenConfig.address, config, wallet.address);
+            if (!allowed) {
+                console.log(`[Faucet] Cool-off active for ${walletAddress}. Remaining: ${remainingHours}h`);
+                return NextResponse.json(
+                    {
+                        error: `Cool-off period active. Please wait ${remainingHours} hours.`,
+                        remainingHours: remainingHours
+                    },
+                    { status: 429 }
+                );
+            }
+
+            // 10 Second Wait
+            console.log('[Faucet] Waiting 10 seconds...');
+            await new Promise(resolve => setTimeout(resolve, 10000));
 
             if (tokenConfig.address === "") {
                 console.log('[Faucet] Sending native token');
