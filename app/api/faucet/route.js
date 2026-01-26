@@ -44,8 +44,6 @@ async function verifyRecaptcha(recaptchaToken) {
     }
 
     usedRecaptchaTokens.add(recaptchaToken);
-    // Allow token reuse for a short window (e.g. 5 minutes) to enable multi-token claims
-    setTimeout(() => usedRecaptchaTokens.delete(recaptchaToken), 5 * 60 * 1000);
 
     return true;
 }
@@ -61,10 +59,8 @@ async function checkCoolOff(walletAddress, tokenAddress, config, faucetAddress) 
     let url;
 
     if (isNative) {
-        // V2 API for Native Transfers (uses base URL without /api)
         url = `${baseUrl}/transactions?filter=to`;
     } else {
-        // V2 API for ERC20 Transfers
         url = `${baseUrl}/token-transfers?type=ERC-20`;
     }
 
@@ -80,7 +76,6 @@ async function checkCoolOff(walletAddress, tokenAddress, config, faucetAddress) 
             }
         } else {
             if (data.items && Array.isArray(data.items)) {
-                // For ERC20s (V2 token-transfers), check 'from' and 'token'
                 lastClaim = data.items.find(tx =>
                     tx.from && tx.from.hash.toLowerCase() === faucetAddress.toLowerCase() &&
                     tx.token && tx.token.address.toLowerCase() === tokenAddress.toLowerCase()

@@ -36,7 +36,6 @@ export const ClaimButton = ({ tokenAddress, captchaCompleted, chainId, address, 
         }
 
         checkRateLimit();
-        // Set up interval to check every minute? Not strictly necessary for "Hours" granularity but good practice
         const interval = setInterval(checkRateLimit, 60000);
         return () => clearInterval(interval);
     }, [tokenAddress, isLocal]);
