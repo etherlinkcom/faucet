@@ -23,6 +23,8 @@ export const ClaimButton = ({ tokenAddress, captchaCompleted, chainId, address, 
         const lastCall = localStorage.getItem(`faucetCallTimestamp_${tokenAddress}`);
         const now = Date.now();
 
+        console.log({ isStaging, lastCall, diff: now - lastCall, RATE_LIMIT_INTERVAL })
+        console.log((!isStaging && lastCall && (now - lastCall) < RATE_LIMIT_INTERVAL))
         if (!isStaging && lastCall && (now - lastCall) < RATE_LIMIT_INTERVAL) {
             setRateLimited(true)
             toast.error('Must wait 1 day before claiming testnet tokens.');
@@ -35,7 +37,7 @@ export const ClaimButton = ({ tokenAddress, captchaCompleted, chainId, address, 
         const body = JSON.stringify({
             walletAddress: address,
             tokenAddress: tokenAddress,
-            amount: amount ,
+            amount: amount,
             recaptchaToken: captchaCompleted
         });
         const response = await fetch('/api/faucet', {

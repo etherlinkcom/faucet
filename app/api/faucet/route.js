@@ -63,6 +63,7 @@ export async function POST(request) {
 
             const isStaging = process.env.NEXT_PUBLIC_ENVIRONMENT === 'staging';
             const recaptchaSuccess = isStaging || await verifyRecaptcha(recaptchaToken);
+            console.log({ recaptchaSuccess })
             if (!recaptchaSuccess) {
                 return NextResponse.json(
                     { error: "reCAPTCHA failed" },
