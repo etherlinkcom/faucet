@@ -9,6 +9,6 @@ const shadownetTokens = []
 const networkTokens = process.env.NEXT_PUBLIC_NETWORK === "shadownet" ? shadownetTokens : testnetTokens;
 
 export const tokens = [
-    { name: 'Tezos', symbol: 'XTZ', amount: '0.15', address: '', decimals: 18, logo: '/img/tokens/XTZ.svg' },
+    { name: 'Tezos', symbol: 'XTZ', amount: 5, address: '', decimals: 18, logo: '/img/tokens/XTZ.svg' },
     ...networkTokens
 ]
