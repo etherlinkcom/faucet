@@ -91,6 +91,7 @@ async function checkCoolOff(walletAddress, tokenAddress, config, faucetAddress) 
                 return { allowed: false, remainingHours: remaining, status: 429 };
             }
         }
+        return { allowed: true, status: 200 }
     } catch (error) {
         console.error('[Faucet] Error checking history:', error);
     }
