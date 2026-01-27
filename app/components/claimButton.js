@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import Image from "next/image";
-import toast, { Toaster } from 'react-hot-toast';
+import toast from 'react-hot-toast';
 import { blockExplorer, id } from "../config/thirdwebConfig";
 
 export const ClaimButton = ({ tokenAddress, captchaCompleted, chainId, address, amount }) => {
@@ -51,6 +51,7 @@ export const ClaimButton = ({ tokenAddress, captchaCompleted, chainId, address, 
             const remaining = Math.ceil((RATE_LIMIT_INTERVAL - (now - lastCall)) / (60 * 60 * 1000));
             setWaitHours(remaining);
             toast.error(`Must wait ${remaining} hours before claiming testnet tokens.`);
+            setIsLoading(false)
             return;
         }
 
@@ -77,7 +78,9 @@ export const ClaimButton = ({ tokenAddress, captchaCompleted, chainId, address, 
             localStorage.setItem(`faucetCallTimestamp_${tokenAddress}`, now);
             setRateLimited(true);
             setWaitHours(24);
+            setIsLoading(false)
         } else {
+
             if (response.status === 429) {
                 const errorData = await response.json();
                 toast.error(errorData.error);
@@ -90,11 +93,13 @@ export const ClaimButton = ({ tokenAddress, captchaCompleted, chainId, address, 
                     setRateLimited(true);
                     setWaitHours(remaining);
                 }
-            } else {
-                toast.error('An error occurred requesting tokens.');
-                console.error('Error:', response.status);
+                setIsLoading(false)
+                return;
             }
-            setIsLoading(false)
+
+            toast.error('An Error Occurred Please Try Again Later');
+            console.error('Error:', response.status);
+            setIsLoading(false);
         }
 
     }
@@ -142,7 +147,6 @@ export const ClaimButton = ({ tokenAddress, captchaCompleted, chainId, address, 
                 ) : (
                     "Send"
                 )}
-                <Toaster />
             </button> : ""
     )
 }

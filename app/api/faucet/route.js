@@ -88,14 +88,13 @@ async function checkCoolOff(walletAddress, tokenAddress, config, faucetAddress) 
             const now = Date.now();
             if (now - lastClaimTime < COOL_OFF_PERIOD) {
                 const remaining = Math.ceil((COOL_OFF_PERIOD - (now - lastClaimTime)) / (60 * 1000 * 60));
-                return { allowed: false, remainingHours: remaining };
+                return { allowed: false, remainingHours: remaining, status: 429 };
             }
         }
     } catch (error) {
         console.error('[Faucet] Error checking history:', error);
     }
-
-    return { allowed: true };
+    return { allowed: false, status: 503 };
 }
 
 export async function POST(request) {
@@ -147,15 +146,17 @@ export async function POST(request) {
             const wallet = new ethers.Wallet(process.env.PRIVATE_KEY, provider);
 
             // Check Cool-off
-            const { allowed, remainingHours } = await checkCoolOff(walletAddress, tokenConfig.address, config, wallet.address);
+            const coolOffResult = await checkCoolOff(walletAddress, tokenConfig.address, config, wallet.address);
+
+            const { allowed, remainingHours, status } = coolOffResult;
             if (!allowed) {
-                console.log(`[Faucet] Cool-off active for ${walletAddress}. Remaining: ${remainingHours}h`);
+                if (remainingHours) console.log(`[Faucet] Cool-off active for ${walletAddress}. Remaining: ${remainingHours}h`);
                 return NextResponse.json(
                     {
-                        error: `Cool-off period active. Please wait ${remainingHours} hours.`,
+                        error: remainingHours ? `Please wait ${remainingHours} hours before next claim.` : "Error checking cool-off period",
                         remainingHours: remainingHours
                     },
-                    { status: 429 }
+                    { status: status || 500 }
                 );
             }
 
