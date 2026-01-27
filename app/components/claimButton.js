@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import Image from "next/image";
+import { ClaimButtonContent } from "./ClaimButtonContent";
 import toast from 'react-hot-toast';
 import { blockExplorer, id } from "../config/thirdwebConfig";
 
@@ -121,32 +121,12 @@ export const ClaimButton = ({ tokenAddress, captchaCompleted, chainId, address, 
                     ${rateLimited && !txHash ? "opacity-50 cursor-not-allowed bg-zinc-400 text-white border-zinc-500" : "text-black bg-zinc-200 hover:bg-darkGreen hover:text-white"}
                 `}
             >
-                {isLoading ? (
-                    <div className="flex items-center justify-center w-full h-full">
-                        <Image
-                            src="/img/home/logo.png"
-                            alt="Loading..."
-                            width={32}
-                            height={32}
-                            className={`w-8 mr-2 ${isLoading ? 'spin-logo' : ''}`}
-                        />
-                    </div>
-                ) : txHash ? (
-                    <div className="flex items-center justify-center w-full h-full">
-                        <Image
-                            src="/img/home/logo.png"
-                            alt="logo"
-                            width={32}
-                            height={32}
-                            className="w-8 mr-2"
-                        />
-                        <span className="truncate">{`${txHash.slice(0, 6)}`}</span>
-                    </div>
-                ) : rateLimited ? (
-                    `Wait ${waitHours}h`
-                ) : (
-                    "Send"
-                )}
+                <ClaimButtonContent
+                    isLoading={isLoading}
+                    txHash={txHash}
+                    rateLimited={rateLimited}
+                    waitHours={waitHours}
+                />
             </button> : ""
     )
 }
