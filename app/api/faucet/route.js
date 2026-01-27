@@ -5,6 +5,7 @@ import { NextResponse } from 'next/server';
 import { ethers } from 'ethers';
 import { enqueue } from './queue';
 import { tokens } from '../../config/tokens';
+import { fetchJson } from '../../utils/fetchJson';
 
 const usedRecaptchaTokens = new Set();
 
@@ -12,12 +13,16 @@ const NETWORK_CONFIG = {
     shadownet: {
         rpcUrl: "https://node.shadownet.etherlink.com",
         chainId: 127823,
+        explorerApi: "https://shadownet.explorer.etherlink.com/api"
     },
     ghostnet: {
         rpcUrl: "https://node.ghostnet.etherlink.com",
         chainId: 128123,
+        explorerApi: "https://testnet.explorer.etherlink.com/api"
     },
 };
+
+
 
 async function verifyRecaptcha(recaptchaToken) {
     if (usedRecaptchaTokens.has(recaptchaToken)) return true;
@@ -39,13 +44,69 @@ async function verifyRecaptcha(recaptchaToken) {
     }
 
     usedRecaptchaTokens.add(recaptchaToken);
+
     return true;
+}
+
+async function checkCoolOff(walletAddress, tokenAddress, config, faucetAddress) {
+    const isLocal = process.env.NEXT_PUBLIC_ENVIRONMENT === 'local';
+    if (isLocal) return { allowed: true };
+    const COOL_OFF_PERIOD = 24 * 60 * 60 * 1000; // 24 hours
+    const isNative = !tokenAddress;
+
+    // Construct API URL
+    const baseUrl = `${config.explorerApi}/v2/addresses/${walletAddress}`;
+    let url;
+
+    if (isNative) {
+        url = `${baseUrl}/transactions?filter=to`;
+    } else {
+        url = `${baseUrl}/token-transfers?type=ERC-20`;
+    }
+
+    try {
+        const data = await fetchJson(url);
+        let lastClaim = null;
+
+        if (isNative) {
+            if (data.items && Array.isArray(data.items)) {
+                lastClaim = data.items.find(tx =>
+                    tx.from && tx.from.hash.toLowerCase() === faucetAddress.toLowerCase()
+                );
+            }
+        } else {
+            if (data.items && Array.isArray(data.items)) {
+                lastClaim = data.items.find(tx =>
+                    tx.from && tx.from.hash.toLowerCase() === faucetAddress.toLowerCase() &&
+                    tx.token && tx.token.address.toLowerCase() === tokenAddress.toLowerCase()
+                );
+            }
+        }
+
+        if (lastClaim) {
+            const lastClaimTime = Date.parse(lastClaim.timestamp);
+            const now = Date.now();
+            if (now - lastClaimTime < COOL_OFF_PERIOD) {
+                const remaining = Math.ceil((COOL_OFF_PERIOD - (now - lastClaimTime)) / (60 * 1000 * 60));
+                return { allowed: false, remainingHours: remaining, status: 429 };
+            }
+        }
+        return { allowed: true, status: 200 }
+    } catch (error) {
+        console.error('[Faucet] Error checking history:', error);
+    }
+    return { allowed: false, status: 503 };
 }
 
 export async function POST(request) {
     try {
         const response = await enqueue(async () => {
             const { walletAddress, tokenAddress, recaptchaToken } = await request.json();
+
+            const ip = request.headers.get('x-forwarded-for')?.split(',')[0] ||
+                request.headers.get('x-real-ip') ||
+                request.ip ||
+                'unknown';
 
             // Find token in config to get the authorized amount
             const tokenConfig = tokens.find(t => t.address.toLowerCase() === (tokenAddress || "").toLowerCase());
@@ -59,13 +120,13 @@ export async function POST(request) {
             }
 
             const amount = tokenConfig.amount.toString();
-            console.log(`[Faucet] Request: ${tokenAddress ? 'ERC20 (' + tokenConfig.symbol + ')' : 'Native'} ${amount} to ${walletAddress}`);
+            console.log(`[Faucet] Request: ${tokenAddress ? 'ERC20 (' + tokenConfig.symbol + ')' : 'Native'} ${amount} to ${walletAddress} from ${ip}`);
 
             const isLocal = process.env.NEXT_PUBLIC_ENVIRONMENT === 'local';
             const recaptchaSuccess = isLocal || await verifyRecaptcha(recaptchaToken);
             if (!recaptchaSuccess) {
                 return NextResponse.json(
-                    { error: "reCAPTCHA failed" },
+                    { error: "reCAPTCHA failed or token reused" },
                     { status: 400 }
                 );
             }
@@ -84,6 +145,25 @@ export async function POST(request) {
                 config.chainId
             );
             const wallet = new ethers.Wallet(process.env.PRIVATE_KEY, provider);
+
+            // Check Cool-off
+            const coolOffResult = await checkCoolOff(walletAddress, tokenConfig.address, config, wallet.address);
+
+            const { allowed, remainingHours, status } = coolOffResult;
+            if (!allowed) {
+                if (remainingHours) console.log(`[Faucet] Cool-off active for ${walletAddress}. Remaining: ${remainingHours}h`);
+                return NextResponse.json(
+                    {
+                        error: remainingHours ? `Please wait ${remainingHours} hours before next claim.` : "Error checking cool-off period",
+                        remainingHours: remainingHours
+                    },
+                    { status: status || 500 }
+                );
+            }
+
+            // 10 Second Wait
+            console.log('[Faucet] Waiting 10 seconds...');
+            await new Promise(resolve => setTimeout(resolve, 10000));
 
             if (tokenConfig.address === "") {
                 console.log('[Faucet] Sending native token');
